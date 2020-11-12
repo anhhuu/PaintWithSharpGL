@@ -10,11 +10,14 @@ namespace LineDraw.Objects
 {
     class Line : Shape
     {
-        private Point start;
-        private Point end;
+       public Line(Point start, Point end)
+       {
+            this.start = start;
+            this.end = end;
+       }
 
-        public Point Start { get => start; set => start = value; }
-        public Point End { get => end; set => end = value; }
+        public Point start { get; set; }
+        public Point end { get; set; }
 
         public void drawWithOpenGL(OpenGL gl, Color color)
         {

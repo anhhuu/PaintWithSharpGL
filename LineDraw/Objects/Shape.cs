@@ -10,6 +10,18 @@ namespace LineDraw.Objects
 {
     interface Shape
     {
+        Point start
+        {
+            get;
+            set;
+        }
+
+        Point end
+        {
+            get;
+            set;
+        }
+
         void drawWithOpenGL(OpenGL gl, Color color);
     }
 }

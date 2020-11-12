@@ -16,10 +16,12 @@ namespace LineDraw
     public partial class MainForm : Form
     {
         Color userColor;
-        short shShape;
+        short shapeType;
 
         Point pStart;
         Point pEnd;
+
+        Shape[] drawingObj;
 
         List<Shape> arrDraw;
 
@@ -31,7 +33,13 @@ namespace LineDraw
             InitializeComponent();
             arrDraw = new List<Shape>();
             userColor = Color.Black;
-            shShape = 0;
+            shapeType = 0;
+
+            drawingObj = new Shape[5];
+            drawingObj[0] = new Line(new Point(0,0), new Point(0,0));
+            drawingObj[1] = new Objects.Rectangle(new Point(0,0), new Point(0,0));
+            drawingObj[2] = new Circle(new Point(0,0), new Point(0,0));
+            drawingObj[3] = new Triangle(new Point(0,0), new Point(0,0));
 
             isDrawing = false;
         }
@@ -69,21 +77,14 @@ namespace LineDraw
 
             if (isDrawing)
             {
-                gl.Color(userColor.R / 255.0, userColor.G / 255.0, userColor.B / 255.0, 0); // Chọn màu đỏ
-
-                gl.Begin(OpenGL.GL_LINES); // Chọn chế độ vẽ tam giác
-                gl.Vertex(pStart.X, gl.RenderContextProvider.Height - pStart.Y);
-                gl.Vertex(pEnd.X, gl.RenderContextProvider.Height - pEnd.Y);
-                gl.End();
-
-                gl.Flush();
+                drawingObj[shapeType].drawWithOpenGL(gl, userColor);
             }
 
             if (arrDraw.Count > 0)
             {
                foreach(Shape s in arrDraw)
                 {
-                    //s.drawWithOpenGL(gl, userColor);
+                    s.drawWithOpenGL(gl, userColor);
                 }
             }
         }
@@ -98,13 +99,15 @@ namespace LineDraw
 
         private void btnLine_Click(object sender, EventArgs e)
         {
-            shShape = 0;
+            shapeType = 0;
         }
 
         private void openGLControl_MouseDown(object sender, MouseEventArgs e)
         {
             pStart = e.Location;
             pEnd = pStart;
+            drawingObj[shapeType].start = pStart;
+            drawingObj[shapeType].end = pEnd;
             isDrawing = true;
 
         }
@@ -113,25 +116,50 @@ namespace LineDraw
         {
             pEnd = e.Location;
             isDrawing = false;
-
-            Line l = new Line();
-            l.Start = pStart;
-            l.End = pEnd;
-
-            arrDraw.Add(l);
+            //drawingObj[shapeType].end = pEnd;
+            switch(shapeType)
+            {
+                case 0:
+                    Line l = new Line(pStart, pEnd);
+                    arrDraw.Add(l);
+                    break;
+                case 1:
+                    Objects.Rectangle r = new Objects.Rectangle(pStart, pEnd);
+                    arrDraw.Add(r);
+                    break;
+                case 2:
+                    Circle c = new Circle(pStart, pEnd);
+                    arrDraw.Add(c);
+                    break;
+                case 3:
+                    Triangle t = new Triangle(pStart, pEnd);
+                    arrDraw.Add(t);
+                    break;
+                default:
+                    break;
+            }
+           
         }
 
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
         {
-            //if(e.Button == MouseButtons.Right)
-            //{
             pEnd = e.Location;
-            //}
+            drawingObj[shapeType].end = pEnd;
         }
 
         private void btnCircle_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("LOL");
+            shapeType = 2;
+        }
+
+        private void btnRec_Click(object sender, EventArgs e)
+        {
+            shapeType = 1;
+        }
+
+        private void btnTriangle_Click(object sender, EventArgs e)
+        {
+            shapeType = 3;
         }
     }
 }

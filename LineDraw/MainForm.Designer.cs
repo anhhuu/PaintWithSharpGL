@@ -33,6 +33,8 @@
             this.btnCircle = new System.Windows.Forms.Button();
             this.btnColorTable = new System.Windows.Forms.Button();
             this.colorDlg = new System.Windows.Forms.ColorDialog();
+            this.btnRec = new System.Windows.Forms.Button();
+            this.btnTriangle = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,7 +67,7 @@
             // 
             // btnCircle
             // 
-            this.btnCircle.Location = new System.Drawing.Point(103, 25);
+            this.btnCircle.Location = new System.Drawing.Point(184, 25);
             this.btnCircle.Name = "btnCircle";
             this.btnCircle.Size = new System.Drawing.Size(75, 23);
             this.btnCircle.TabIndex = 1;
@@ -83,6 +85,26 @@
             this.btnColorTable.UseVisualStyleBackColor = true;
             this.btnColorTable.Click += new System.EventHandler(this.btnColorTable_Click);
             // 
+            // btnRec
+            // 
+            this.btnRec.Location = new System.Drawing.Point(103, 25);
+            this.btnRec.Name = "btnRec";
+            this.btnRec.Size = new System.Drawing.Size(75, 23);
+            this.btnRec.TabIndex = 1;
+            this.btnRec.Text = "Rec";
+            this.btnRec.UseVisualStyleBackColor = true;
+            this.btnRec.Click += new System.EventHandler(this.btnRec_Click);
+            // 
+            // btnTriangle
+            // 
+            this.btnTriangle.Location = new System.Drawing.Point(265, 25);
+            this.btnTriangle.Name = "btnTriangle";
+            this.btnTriangle.Size = new System.Drawing.Size(75, 23);
+            this.btnTriangle.TabIndex = 1;
+            this.btnTriangle.Text = "Triangle";
+            this.btnTriangle.UseVisualStyleBackColor = true;
+            this.btnTriangle.Click += new System.EventHandler(this.btnTriangle_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -90,6 +112,8 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(844, 501);
             this.Controls.Add(this.btnColorTable);
+            this.Controls.Add(this.btnRec);
+            this.Controls.Add(this.btnTriangle);
             this.Controls.Add(this.btnCircle);
             this.Controls.Add(this.btnLine);
             this.Controls.Add(this.openGLControl);
@@ -111,6 +135,8 @@
         private System.Windows.Forms.Button btnCircle;
         private System.Windows.Forms.Button btnColorTable;
         private System.Windows.Forms.ColorDialog colorDlg;
+        private System.Windows.Forms.Button btnRec;
+        private System.Windows.Forms.Button btnTriangle;
     }
 }
 
