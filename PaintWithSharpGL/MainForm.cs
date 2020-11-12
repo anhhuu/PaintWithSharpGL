@@ -17,6 +17,7 @@ namespace LineDraw
     {
         Color userColor;
         short shapeType;
+        int lineWidth;
 
         Point pStart;
         Point pEnd;
@@ -33,13 +34,14 @@ namespace LineDraw
             InitializeComponent();
             arrDraw = new List<Shape>();
             userColor = Color.Black;
+            lineWidth = 1;
             shapeType = 0;
 
             drawingObj = new Shape[5];
-            drawingObj[0] = new Line(new Point(0,0), new Point(0,0));
-            drawingObj[1] = new Objects.Rectangle(new Point(0,0), new Point(0,0));
-            drawingObj[2] = new Circle(new Point(0,0), new Point(0,0));
-            drawingObj[3] = new Triangle(new Point(0,0), new Point(0,0));
+            drawingObj[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
+            drawingObj[1] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
+            drawingObj[2] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
+            drawingObj[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
 
             isDrawing = false;
         }
@@ -74,17 +76,17 @@ namespace LineDraw
             OpenGL gl = openGLControl.OpenGL;
             // Clear the color and depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
-
+            //gl.LineWidth(lineWidth);
             if (isDrawing)
             {
-                drawingObj[shapeType].drawWithOpenGL(gl, userColor);
+                drawingObj[shapeType].drawWithOpenGL(gl);
             }
 
             if (arrDraw.Count > 0)
             {
-               foreach(Shape s in arrDraw)
+                foreach (Shape s in arrDraw)
                 {
-                    s.drawWithOpenGL(gl, userColor);
+                    s.drawWithOpenGL(gl);
                 }
             }
         }
@@ -94,6 +96,7 @@ namespace LineDraw
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 userColor = colorDlg.Color;
+                drawingObj[shapeType].color = userColor;
             }
         }
 
@@ -106,6 +109,8 @@ namespace LineDraw
         {
             pStart = e.Location;
             pEnd = pStart;
+            drawingObj[shapeType].color = userColor;
+            drawingObj[shapeType].lineWidth = lineWidth;
             drawingObj[shapeType].start = pStart;
             drawingObj[shapeType].end = pEnd;
             isDrawing = true;
@@ -117,28 +122,28 @@ namespace LineDraw
             pEnd = e.Location;
             isDrawing = false;
             //drawingObj[shapeType].end = pEnd;
-            switch(shapeType)
+            switch (shapeType)
             {
                 case 0:
-                    Line l = new Line(pStart, pEnd);
+                    Line l = new Line(pStart, pEnd, userColor, lineWidth);
                     arrDraw.Add(l);
                     break;
                 case 1:
-                    Objects.Rectangle r = new Objects.Rectangle(pStart, pEnd);
+                    Objects.Rectangle r = new Objects.Rectangle(pStart, pEnd, userColor, lineWidth);
                     arrDraw.Add(r);
                     break;
                 case 2:
-                    Circle c = new Circle(pStart, pEnd);
+                    Circle c = new Circle(pStart, pEnd, userColor, lineWidth);
                     arrDraw.Add(c);
                     break;
                 case 3:
-                    Triangle t = new Triangle(pStart, pEnd);
+                    Triangle t = new Triangle(pStart, pEnd, userColor, lineWidth);
                     arrDraw.Add(t);
                     break;
                 default:
                     break;
             }
-           
+
         }
 
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
@@ -160,6 +165,13 @@ namespace LineDraw
         private void btnTriangle_Click(object sender, EventArgs e)
         {
             shapeType = 3;
+        }
+
+        private void cbLineWidth_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selected = cbLineWidth.SelectedItem.ToString();
+            lineWidth = Int32.Parse(selected);
+            drawingObj[shapeType].lineWidth = lineWidth;
         }
     }
 }

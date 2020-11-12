@@ -16,10 +16,12 @@ namespace LineDraw.Objects
         private Point center;
         private Point borderPoint;
 
-        public Circle(Point start, Point end)
+        public Circle(Point start, Point end, Color color, int lineWidth)
         {
             this.center = start;
             this.borderPoint = end;
+            this.color = color;
+            this.lineWidth = lineWidth;
             radius = Math.Sqrt((center.X - borderPoint.X) * (center.X - borderPoint.X) + (center.Y - borderPoint.Y) * (center.Y - borderPoint.Y));
         }
 
@@ -41,11 +43,15 @@ namespace LineDraw.Objects
                 radius = Math.Sqrt((center.X - borderPoint.X) * (center.X - borderPoint.X) + (center.Y - borderPoint.Y) * (center.Y - borderPoint.Y));
             }
         }
-        public void drawWithOpenGL(OpenGL gl, Color color)
+
+        public Color color { get; set; }
+        public int lineWidth { get; set; }
+        public void drawWithOpenGL(OpenGL gl)
         {
             Point C = new Point(center.X, gl.RenderContextProvider.Height - center.Y);
 
-            gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0); // Chọn màu đỏ
+            gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0);
+            gl.LineWidth(lineWidth);
             gl.Begin(OpenGL.GL_LINE_LOOP);
 
             for (int i = 0; i <= 360; i++)

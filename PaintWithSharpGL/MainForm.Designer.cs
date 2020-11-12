@@ -35,6 +35,7 @@
             this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.btnRec = new System.Windows.Forms.Button();
             this.btnTriangle = new System.Windows.Forms.Button();
+            this.cbLineWidth = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,12 +106,28 @@
             this.btnTriangle.UseVisualStyleBackColor = true;
             this.btnTriangle.Click += new System.EventHandler(this.btnTriangle_Click);
             // 
+            // cbLineWidth
+            // 
+            this.cbLineWidth.FormattingEnabled = true;
+            this.cbLineWidth.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.cbLineWidth.Location = new System.Drawing.Point(399, 27);
+            this.cbLineWidth.Name = "cbLineWidth";
+            this.cbLineWidth.Size = new System.Drawing.Size(121, 21);
+            this.cbLineWidth.TabIndex = 2;
+            this.cbLineWidth.Text = "Line Width";
+            this.cbLineWidth.SelectedIndexChanged += new System.EventHandler(this.cbLineWidth_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(844, 501);
+            this.Controls.Add(this.cbLineWidth);
             this.Controls.Add(this.btnColorTable);
             this.Controls.Add(this.btnRec);
             this.Controls.Add(this.btnTriangle);
@@ -122,7 +139,7 @@
             this.Name = "MainForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Paint Clone";
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).EndInit();
             this.ResumeLayout(false);
 
@@ -137,6 +154,7 @@
         private System.Windows.Forms.ColorDialog colorDlg;
         private System.Windows.Forms.Button btnRec;
         private System.Windows.Forms.Button btnTriangle;
+        private System.Windows.Forms.ComboBox cbLineWidth;
     }
 }
 

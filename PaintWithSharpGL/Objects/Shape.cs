@@ -22,6 +22,18 @@ namespace LineDraw.Objects
             set;
         }
 
-        void drawWithOpenGL(OpenGL gl, Color color);
+        Color color
+        {
+            get;
+            set;
+        }
+
+        int lineWidth
+        {
+            get;
+            set;
+        }
+
+        void drawWithOpenGL(OpenGL gl);
     }
 }
