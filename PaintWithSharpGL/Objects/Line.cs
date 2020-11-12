@@ -12,24 +12,24 @@ namespace LineDraw.Objects
     {
        public Line(Point start, Point end, Color color, int lineWidth)
        {
-            this.start = start;
-            this.end = end;
-            this.color = color;
-            this.lineWidth = lineWidth;
+            this.StartPoint = start;
+            this.EndPoint = end;
+            this.Color = color;
+            this.LineWidth = lineWidth;
        }
 
-        public Point start { get; set; }
-        public Point end { get; set; }
-        public Color color { get; set; }
-        public int lineWidth { get; set; }
+        public Point StartPoint { get; set; }
+        public Point EndPoint { get; set; }
+        public Color Color { get; set; }
+        public int LineWidth { get; set; }
 
-        public void drawWithOpenGL(OpenGL gl)
+        public void DrawWithOpenGL(OpenGL gl)
         {
-            gl.Color(color.R / 255.0, color.G / 255.0, color.B / 255.0, 0); 
-            gl.LineWidth(lineWidth);
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0); 
+            gl.LineWidth(LineWidth);
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(start.X, gl.RenderContextProvider.Height - start.Y);
-            gl.Vertex(end.X, gl.RenderContextProvider.Height - end.Y);
+            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
+            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
             gl.End();
 
             gl.Flush();

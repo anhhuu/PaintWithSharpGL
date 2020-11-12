@@ -15,35 +15,38 @@ namespace LineDraw
 {
     public partial class MainForm : Form
     {
-        Color userColor;
-        short shapeType;
-        int lineWidth;
+        private Color UserColor;
+        private short ShapeType;
+        private int LineWidth;
 
-        Point pStart;
-        Point pEnd;
+        private Point StartPoint;
+        private Point EndPoint;
 
-        Shape[] drawingObj;
+        private Shape[] DrawingObjects;
 
-        List<Shape> arrDraw;
+        private List<Shape> DrawObjects;
 
-        bool isDrawing;
+        private bool IsDrawing;
 
 
         public MainForm()
         {
             InitializeComponent();
-            arrDraw = new List<Shape>();
-            userColor = Color.Black;
-            lineWidth = 1;
-            shapeType = 0;
+            DrawObjects = new List<Shape>();
+            UserColor = Color.Black;
+            LineWidth = 1;
+            ShapeType = 0;
 
-            drawingObj = new Shape[5];
-            drawingObj[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
-            drawingObj[1] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
-            drawingObj[2] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
-            drawingObj[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, lineWidth);
+            StartPoint = new Point(0, 0);
+            EndPoint = new Point(0, 0);
 
-            isDrawing = false;
+            DrawingObjects = new Shape[5];
+            DrawingObjects[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[1] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[2] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+
+            IsDrawing = false;
         }
 
         private void openGLControl_OpenGLInitialized(object sender, EventArgs e)
@@ -77,68 +80,56 @@ namespace LineDraw
             // Clear the color and depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             //gl.LineWidth(lineWidth);
-            if (isDrawing)
+            if (IsDrawing)
             {
-                drawingObj[shapeType].drawWithOpenGL(gl);
+                DrawingObjects[ShapeType].DrawWithOpenGL(gl);
             }
 
-            if (arrDraw.Count > 0)
+            if (DrawObjects.Count > 0)
             {
-                foreach (Shape s in arrDraw)
+                foreach (Shape shape in DrawObjects)
                 {
-                    s.drawWithOpenGL(gl);
+                    shape.DrawWithOpenGL(gl);
                 }
             }
         }
 
-        private void btnColorTable_Click(object sender, EventArgs e)
-        {
-            if (colorDlg.ShowDialog() == DialogResult.OK)
-            {
-                userColor = colorDlg.Color;
-                drawingObj[shapeType].color = userColor;
-            }
-        }
-
-        private void btnLine_Click(object sender, EventArgs e)
-        {
-            shapeType = 0;
-        }
-
         private void openGLControl_MouseDown(object sender, MouseEventArgs e)
         {
-            pStart = e.Location;
-            pEnd = pStart;
-            drawingObj[shapeType].color = userColor;
-            drawingObj[shapeType].lineWidth = lineWidth;
-            drawingObj[shapeType].start = pStart;
-            drawingObj[shapeType].end = pEnd;
-            isDrawing = true;
-
+            if(e.Button == MouseButtons.Left)
+            {
+                StartPoint = e.Location;
+                EndPoint = StartPoint;
+                DrawingObjects[ShapeType].Color = UserColor;
+                DrawingObjects[ShapeType].LineWidth = LineWidth;
+                DrawingObjects[ShapeType].StartPoint = StartPoint;
+                DrawingObjects[ShapeType].EndPoint = EndPoint;
+                IsDrawing = true;
+            }
         }
 
         private void openGLControl_MouseUp(object sender, MouseEventArgs e)
         {
-            pEnd = e.Location;
-            isDrawing = false;
+            EndPoint = e.Location;
+            IsDrawing = false;
             //drawingObj[shapeType].end = pEnd;
-            switch (shapeType)
+            switch (ShapeType)
             {
                 case 0:
-                    Line l = new Line(pStart, pEnd, userColor, lineWidth);
-                    arrDraw.Add(l);
+                    Line l = new Line(StartPoint, EndPoint, UserColor, LineWidth);
+                    DrawObjects.Add(l);
                     break;
                 case 1:
-                    Objects.Rectangle r = new Objects.Rectangle(pStart, pEnd, userColor, lineWidth);
-                    arrDraw.Add(r);
+                    Objects.Rectangle r = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
+                    DrawObjects.Add(r);
                     break;
                 case 2:
-                    Circle c = new Circle(pStart, pEnd, userColor, lineWidth);
-                    arrDraw.Add(c);
+                    Circle c = new Circle(StartPoint, EndPoint, UserColor, LineWidth);
+                    DrawObjects.Add(c);
                     break;
                 case 3:
-                    Triangle t = new Triangle(pStart, pEnd, userColor, lineWidth);
-                    arrDraw.Add(t);
+                    Triangle t = new Triangle(StartPoint, EndPoint, UserColor, LineWidth);
+                    DrawObjects.Add(t);
                     break;
                 default:
                     break;
@@ -148,30 +139,45 @@ namespace LineDraw
 
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
         {
-            pEnd = e.Location;
-            drawingObj[shapeType].end = pEnd;
+            if (e.Button == MouseButtons.Left)
+            {
+                EndPoint = e.Location;
+                DrawingObjects[ShapeType].EndPoint = EndPoint;
+            }
         }
-
-        private void btnCircle_Click(object sender, EventArgs e)
+        private void btnLine_Click(object sender, EventArgs e)
         {
-            shapeType = 2;
+            ShapeType = 0;
         }
 
         private void btnRec_Click(object sender, EventArgs e)
         {
-            shapeType = 1;
+            ShapeType = 1;
+        }
+
+        private void btnCircle_Click(object sender, EventArgs e)
+        {
+            ShapeType = 2;
         }
 
         private void btnTriangle_Click(object sender, EventArgs e)
         {
-            shapeType = 3;
+            ShapeType = 3;
+        }
+        private void btnColorTable_Click(object sender, EventArgs e)
+        {
+            if (colorDlg.ShowDialog() == DialogResult.OK)
+            {
+                UserColor = colorDlg.Color;
+                DrawingObjects[ShapeType].Color = UserColor;
+            }
         }
 
         private void cbLineWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = cbLineWidth.SelectedItem.ToString();
-            lineWidth = Int32.Parse(selected);
-            drawingObj[shapeType].lineWidth = lineWidth;
+            LineWidth = Int32.Parse(selected);
+            DrawingObjects[ShapeType].LineWidth = LineWidth;
         }
     }
 }

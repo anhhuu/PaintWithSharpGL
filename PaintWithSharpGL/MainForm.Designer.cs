@@ -36,6 +36,7 @@
             this.btnRec = new System.Windows.Forms.Button();
             this.btnTriangle = new System.Windows.Forms.Button();
             this.cbLineWidth = new System.Windows.Forms.ComboBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,6 +156,7 @@
         private System.Windows.Forms.Button btnRec;
         private System.Windows.Forms.Button btnTriangle;
         private System.Windows.Forms.ComboBox cbLineWidth;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 
