@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LineDraw.Objects
+namespace Paint.Objects
 {
     class Triangle : Shape
     {
@@ -26,7 +26,7 @@ namespace LineDraw.Objects
 
         public void DrawWithOpenGL(OpenGL gl)
         {
-            double degInRad = 60 * DEGTORAD;
+            /*double degInRad = 60 * DEGTORAD;
             Point A = new Point(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
             Point B = new Point(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
             Point C = new Point();
@@ -40,23 +40,47 @@ namespace LineDraw.Objects
             C.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
 
             C.X += A.X;
-            C.Y += A.Y;
+            C.Y += A.Y;*/
 
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
 
-            gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);   
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);   
-            gl.End();
-
-            gl.Begin(OpenGL.GL_LINES);
+            /*gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
             gl.Vertex(C.X, C.Y);
             gl.End();
 
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(C.X, C.Y);
+            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.End();*/
+
+
+            gl.MatrixMode(OpenGL.GL_MODELVIEW);
+            gl.LoadIdentity();
+
+            gl.PushMatrix();
+            gl.Translate(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y, 0.0f);
+            gl.Rotate(60.0, 0.0, 0.0, 1.0);
+            gl.Translate(-StartPoint.X, -(gl.RenderContextProvider.Height - StartPoint.Y), 0.0f);
+            gl.Begin(OpenGL.GL_LINES);
+            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
+            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.End();
+            gl.PopMatrix();
+
+            gl.PushMatrix();
+            gl.Translate(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y, 0.0f);
+            gl.Rotate(-60.0, 0.0, 0.0, 1.0);
+            gl.Translate(-EndPoint.X, -(gl.RenderContextProvider.Height - EndPoint.Y), 0.0f);
+            gl.Begin(OpenGL.GL_LINES);
+            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
+            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.End();
+            gl.PopMatrix();
+
+            gl.Begin(OpenGL.GL_LINES);
+            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
             gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
             gl.End();
 

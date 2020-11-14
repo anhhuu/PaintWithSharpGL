@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LineDraw.Objects
+namespace Paint.Objects
 {
     interface Shape
     {

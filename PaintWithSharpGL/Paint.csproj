@@ -62,6 +62,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Objects\Circle.cs" />
+    <Compile Include="Objects\Ellipse.cs" />
+    <Compile Include="Objects\Polygon.cs" />
     <Compile Include="Objects\Line.cs" />
     <Compile Include="Objects\Rectangle.cs" />
     <Compile Include="Objects\Shape.cs" />

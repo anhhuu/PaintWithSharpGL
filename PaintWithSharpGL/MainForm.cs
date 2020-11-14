@@ -1,4 +1,4 @@
-﻿using LineDraw.Objects;
+﻿using Paint.Objects;
 using SharpGL;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LineDraw
+namespace Paint
 {
     public partial class MainForm : Form
     {
@@ -23,8 +23,9 @@ namespace LineDraw
         private Point EndPoint;
 
         private Shape[] DrawingObjects;
-
         private List<Shape> DrawObjects;
+
+        private string Status;
 
         private bool IsDrawing;
 
@@ -40,12 +41,19 @@ namespace LineDraw
             StartPoint = new Point(0, 0);
             EndPoint = new Point(0, 0);
 
-            DrawingObjects = new Shape[5];
+            DrawingObjects = new Shape[7];
             DrawingObjects[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[1] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[2] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[3] = new Ellipse(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[4] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[5] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 5, LineWidth);
+            DrawingObjects[6] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 6, LineWidth);
 
+            Status = "Status: Drawing line";
+            lbStatus.Text = Status;
+
+            btnColorTable.BackColor = UserColor;
             IsDrawing = false;
         }
 
@@ -89,14 +97,18 @@ namespace LineDraw
             {
                 foreach (Shape shape in DrawObjects)
                 {
+                    Stopwatch timer = new Stopwatch();
+                    timer.Start();
                     shape.DrawWithOpenGL(gl);
+                    timer.Stop();
+                    Console.WriteLine("Time Taken: " + timer.Elapsed.TotalMilliseconds.ToString("#,##0.00 'milliseconds'"));
                 }
             }
         }
 
         private void openGLControl_MouseDown(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 StartPoint = e.Location;
                 EndPoint = StartPoint;
@@ -110,31 +122,45 @@ namespace LineDraw
 
         private void openGLControl_MouseUp(object sender, MouseEventArgs e)
         {
-            EndPoint = e.Location;
-            IsDrawing = false;
-            //drawingObj[shapeType].end = pEnd;
-            switch (ShapeType)
+            if (e.Button == MouseButtons.Left)
             {
-                case 0:
-                    Line l = new Line(StartPoint, EndPoint, UserColor, LineWidth);
-                    DrawObjects.Add(l);
-                    break;
-                case 1:
-                    Objects.Rectangle r = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
-                    DrawObjects.Add(r);
-                    break;
-                case 2:
-                    Circle c = new Circle(StartPoint, EndPoint, UserColor, LineWidth);
-                    DrawObjects.Add(c);
-                    break;
-                case 3:
-                    Triangle t = new Triangle(StartPoint, EndPoint, UserColor, LineWidth);
-                    DrawObjects.Add(t);
-                    break;
-                default:
-                    break;
+                EndPoint = e.Location;
+                IsDrawing = false;
+                //drawingObj[shapeType].end = pEnd;
+                switch (ShapeType)
+                {
+                    case 0:
+                        Line line = new Line(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(line);
+                        break;
+                    case 1:
+                        Objects.Rectangle rec = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(rec);
+                        break;
+                    case 2:
+                        Circle circle = new Circle(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(circle);
+                        break;
+                    case 3:
+                        Ellipse ellipse = new Ellipse(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(ellipse);
+                        break;
+                    case 4:
+                        Triangle triangle = new Triangle(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(triangle);
+                        break;
+                    case 5:
+                        Polygon pentagon = new Polygon(StartPoint, EndPoint, UserColor, 5, LineWidth);
+                        DrawObjects.Add(pentagon);
+                        break;
+                    case 6:
+                        Polygon hexagon = new Polygon(StartPoint, EndPoint, UserColor, 6, LineWidth);
+                        DrawObjects.Add(hexagon);
+                        break;
+                    default:
+                        break;
+                }
             }
-
         }
 
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
@@ -148,28 +174,60 @@ namespace LineDraw
         private void btnLine_Click(object sender, EventArgs e)
         {
             ShapeType = 0;
+            Status = "Status: Drawing line";
+            lbStatus.Text = Status;
         }
 
         private void btnRec_Click(object sender, EventArgs e)
         {
             ShapeType = 1;
+            Status = "Status: Drawing rectangle";
+            lbStatus.Text = Status;
         }
 
         private void btnCircle_Click(object sender, EventArgs e)
         {
             ShapeType = 2;
+            Status = "Status: Drawing circle";
+            lbStatus.Text = Status;
+        }
+
+        private void btnEllipse_Click(object sender, EventArgs e)
+        {
+            ShapeType = 3;
+            Status = "Status: Drawing ellipse";
+            lbStatus.Text = Status;
         }
 
         private void btnTriangle_Click(object sender, EventArgs e)
         {
-            ShapeType = 3;
+            ShapeType = 4;
+            Status = "Status: Drawing equilateral triangle";
+            lbStatus.Text = Status;
         }
+
+        private void btnPentagon_Click(object sender, EventArgs e)
+        {
+            ShapeType = 5;
+            Status = "Status: Drawing equilateral pentagon";
+            lbStatus.Text = Status;
+        }
+
+        private void btnHexagon_Click(object sender, EventArgs e)
+        {
+            ShapeType = 6;
+            Status = "Status: Drawing equilateral hexagon";
+            lbStatus.Text = Status;
+        }
+
         private void btnColorTable_Click(object sender, EventArgs e)
         {
             if (colorDlg.ShowDialog() == DialogResult.OK)
             {
                 UserColor = colorDlg.Color;
                 DrawingObjects[ShapeType].Color = UserColor;
+                lbStatus.Text = Status;
+                btnColorTable.BackColor = UserColor;
             }
         }
 
@@ -178,6 +236,14 @@ namespace LineDraw
             string selected = cbLineWidth.SelectedItem.ToString();
             LineWidth = Int32.Parse(selected);
             DrawingObjects[ShapeType].LineWidth = LineWidth;
+        }
+
+        void setPixel(int x, int y, OpenGL gl)
+        {
+            gl.Color(0.0, 0.0, 0.0); //Set pixel to black  
+            gl.Begin(OpenGL.GL_POINTS);
+            gl.Vertex(x, y); //Set pixel coordinates 
+            gl.End();
         }
     }
 }

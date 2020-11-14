@@ -8,21 +8,23 @@ using System.Threading.Tasks;
 
 namespace Paint.Objects
 {
-    class Circle : Shape
+    class Ellipse : Shape
     {
-        private double Radius;
+        private double RadiusX;
+        private double RadiusY;
         private const double DEGTORAD = 3.14159 / 180;
 
         private Point CenterPoint;
         private Point BorderPoint;
 
-        public Circle(Point start, Point end, Color color, int lineWidth)
+        public Ellipse(Point start, Point end, Color color, int lineWidth)
         {
             this.CenterPoint = start;
             this.BorderPoint = end;
             this.Color = color;
             this.LineWidth = lineWidth;
-            Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+            RadiusX = Math.Abs(CenterPoint.X - BorderPoint.X);
+            RadiusY = Math.Abs(CenterPoint.Y - BorderPoint.Y);
         }
 
         public Point StartPoint
@@ -31,7 +33,8 @@ namespace Paint.Objects
             set
             {
                 CenterPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                RadiusX = Math.Abs(CenterPoint.X - BorderPoint.X);
+                RadiusY = Math.Abs(CenterPoint.Y - BorderPoint.Y);
             }
         }
         public Point EndPoint
@@ -40,7 +43,8 @@ namespace Paint.Objects
             set
             {
                 BorderPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                RadiusX = Math.Abs(CenterPoint.X - BorderPoint.X);
+                RadiusY = Math.Abs(CenterPoint.Y - BorderPoint.Y);
             }
         }
 
@@ -49,20 +53,14 @@ namespace Paint.Objects
         public void DrawWithOpenGL(OpenGL gl)
         {
             Point C = new Point(CenterPoint.X, gl.RenderContextProvider.Height - CenterPoint.Y);
-
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
-            gl.LineWidth(LineWidth);
-
             gl.Begin(OpenGL.GL_LINE_LOOP);
-
             for (int i = 0; i <= 360; i++)
             {
                 double degInRad = i * DEGTORAD;
-                gl.Vertex(Math.Cos(degInRad) * Radius + C.X, Math.Sin(degInRad) * Radius + C.Y);
+                gl.Vertex(RadiusX * Math.Cos(degInRad) + C.X, RadiusY * Math.Sin(degInRad) + C.Y);
             }
-
             gl.End();
-
             gl.Flush();
         }
     }

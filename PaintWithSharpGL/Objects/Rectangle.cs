@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LineDraw.Objects
+namespace Paint.Objects
 {
     class Rectangle : Shape
     {
@@ -53,7 +53,7 @@ namespace LineDraw.Objects
             gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
             gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
             gl.End();
-
+            
             gl.Flush();
         }
     }
