@@ -15,22 +15,43 @@ namespace Paint
 {
     public partial class MainForm : Form
     {
+        //user picked color
         private Color UserColor;
+
+        //0: Line
+        //1: Circle
+        //2: Ellipse
+        //3: Triangle
+        //4: Rectangle
+        //5: Pentagon
+        //6: Hexagon
         private short ShapeType;
-        private short AlgorithmType; //0: OpenGL function, 1: Theoretical Algorithm
+
+        //0: OpenGL function
+        //1: Theoretical Algorithm
+        private short AlgorithmType;
+
+        //user line width picked
         private int LineWidth;
 
+        //the first point of mouse
         private Point StartPoint;
+        //the seconds point of mouse
         private Point EndPoint;
 
+        //array storing objects are drawing with mouse
         private Shape[] DrawingObjects;
+
+        //list storing objects have been drawn
         private List<Shape> DrawObjects;
 
+        //status drawing (object choosed)
         private string Status;
-        private bool isStopTimer;
+        private bool IsStopTimer;
 
         private bool IsDrawing;
 
+        //height of openGL controll (render contex)
         private int RenderContextProvider_Height;
 
 
@@ -45,18 +66,19 @@ namespace Paint
             StartPoint = new Point(0, 0);
             EndPoint = new Point(0, 0);
 
+            //init drawing objects
             DrawingObjects = new Shape[7];
             DrawingObjects[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[1] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[2] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[3] = new Ellipse(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[4] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[1] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[2] = new Ellipse(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+            DrawingObjects[4] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[5] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 5, LineWidth);
             DrawingObjects[6] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 6, LineWidth);
 
             Status = "Drawing line";
             lbStatus.Text = Status;
-            isStopTimer = false;
+            IsStopTimer = false;
             btnColorTable.BackColor = UserColor;
             IsDrawing = false;
 
@@ -89,21 +111,23 @@ namespace Paint
 
         private void openGLControl_OpenGLDraw(object sender, RenderEventArgs args)
         {
-            // Get the OpenGL object.
+            //get the OpenGL object.
             OpenGL gl = openGLControl.OpenGL;
 
-            // Clear the color and depth buffer.
+            //clear the color and depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
-            //gl.LineWidth(lineWidth);
+
             if (IsDrawing)
             {
                 if (AlgorithmType == 1)
                 {
-                    DrawingObjects[ShapeType].DrawWithTheoryAlgorithm(gl);
+                    //draw with theoretical algorithm
+                    DrawingObjects[ShapeType].DrawWithTheoreticalAlgorithm(gl);
                 }
                 else
                 {
-                    DrawingObjects[ShapeType].DrawWithOpenGL(gl);
+                    //draw with OpenGL build-in function
+                    DrawingObjects[ShapeType].DrawWithOpenGLBuildIn(gl);
                 }
             }
 
@@ -111,31 +135,34 @@ namespace Paint
             {
                 foreach (Shape shape in DrawObjects)
                 {
-                    if (isStopTimer)
+                    if (IsStopTimer)
                     {
                         if (AlgorithmType == 1)
                         {
-                            shape.DrawWithTheoryAlgorithm(gl);
+                            shape.DrawWithTheoreticalAlgorithm(gl);
                         }
                         else
                         {
-                            shape.DrawWithOpenGL(gl);
+                            shape.DrawWithOpenGLBuildIn(gl);
                         }
                     }
                     else
                     {
                         string typeObj = shape.getTypeOfObject();
                         Stopwatch timer = new Stopwatch();
+                        
+                        //get timer execute algorithm
                         timer.Start();
                         if (AlgorithmType == 1)
                         {
-                            shape.DrawWithTheoryAlgorithm(gl);
+                            shape.DrawWithTheoreticalAlgorithm(gl);
                         }
                         else
                         {
-                            shape.DrawWithOpenGL(gl);
+                            shape.DrawWithOpenGLBuildIn(gl);
                         }
                         timer.Stop();
+                        
                         if (typeObj == "Line")
                         {
                             lbLineGLTimer.Text = "Line:       " + timer.Elapsed.TotalMilliseconds.ToString("#,###0.000 'ms'");
@@ -193,7 +220,8 @@ namespace Paint
                 EndPoint = e.Location;
                 EndPoint.Y = RenderContextProvider_Height - EndPoint.Y;
                 IsDrawing = false;
-                //drawingObj[shapeType].end = pEnd;
+
+                //drawing real-time when move mouse
                 switch (ShapeType)
                 {
                     case 0:
@@ -201,20 +229,20 @@ namespace Paint
                         DrawObjects.Add(line);
                         break;
                     case 1:
-                        Objects.Rectangle rec = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
-                        DrawObjects.Add(rec);
-                        break;
-                    case 2:
                         Circle circle = new Circle(StartPoint, EndPoint, UserColor, LineWidth);
                         DrawObjects.Add(circle);
                         break;
-                    case 3:
+                    case 2:
                         Ellipse ellipse = new Ellipse(StartPoint, EndPoint, UserColor, LineWidth);
                         DrawObjects.Add(ellipse);
                         break;
-                    case 4:
+                    case 3:
                         Triangle triangle = new Triangle(StartPoint, EndPoint, UserColor, LineWidth);
                         DrawObjects.Add(triangle);
+                        break;
+                    case 4:
+                        Objects.Rectangle rec = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
+                        DrawObjects.Add(rec);
                         break;
                     case 5:
                         Polygon pentagon = new Polygon(StartPoint, EndPoint, UserColor, 5, LineWidth);
@@ -232,6 +260,7 @@ namespace Paint
 
         private void openGLControl_MouseMove(object sender, MouseEventArgs e)
         {
+            //press left mouse button to draw
             if (e.Button == MouseButtons.Left)
             {
                 EndPoint = e.Location;
@@ -239,6 +268,8 @@ namespace Paint
                 DrawingObjects[ShapeType].EndPoint = EndPoint;
             }
         }
+
+        //set shape type to Line
         private void btnLine_Click(object sender, EventArgs e)
         {
             ShapeType = 0;
@@ -246,34 +277,39 @@ namespace Paint
             lbStatus.Text = Status;
         }
 
-        private void btnRec_Click(object sender, EventArgs e)
-        {
-            ShapeType = 1;
-            Status = "Rectangle";
-            lbStatus.Text = Status;
-        }
-
+        //set shape type to Circle
         private void btnCircle_Click(object sender, EventArgs e)
         {
-            ShapeType = 2;
+            ShapeType = 1;
             Status = "Circle";
             lbStatus.Text = Status;
         }
 
+        //set shape type to Ellipse
         private void btnEllipse_Click(object sender, EventArgs e)
         {
-            ShapeType = 3;
+            ShapeType = 2;
             Status = "Ellipse";
             lbStatus.Text = Status;
         }
 
+        //set shape type to Triangle
         private void btnTriangle_Click(object sender, EventArgs e)
         {
-            ShapeType = 4;
+            ShapeType = 3;
             Status = "Equilateral Triangle";
             lbStatus.Text = Status;
         }
 
+        //set shape type to Rectangle
+        private void btnRec_Click(object sender, EventArgs e)
+        {
+            ShapeType = 4;
+            Status = "Rectangle";
+            lbStatus.Text = Status;
+        }
+
+        //set shape type to Pentagon
         private void btnPentagon_Click(object sender, EventArgs e)
         {
             ShapeType = 5;
@@ -281,6 +317,7 @@ namespace Paint
             lbStatus.Text = Status;
         }
 
+        //set shape type to Hexagon
         private void btnHexagon_Click(object sender, EventArgs e)
         {
             ShapeType = 6;
@@ -288,6 +325,7 @@ namespace Paint
             lbStatus.Text = Status;
         }
 
+        //show color dialog
         private void btnColorTable_Click(object sender, EventArgs e)
         {
             if (colorDlg.ShowDialog() == DialogResult.OK)
@@ -299,6 +337,7 @@ namespace Paint
             }
         }
 
+        //select line width mode
         private void cbLineWidth_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = cbLineWidth.SelectedItem.ToString();
@@ -306,21 +345,23 @@ namespace Paint
             DrawingObjects[ShapeType].LineWidth = LineWidth;
         }
 
+        //stop timer
         private void btnStopTimer_Click(object sender, EventArgs e)
         {
-            if (isStopTimer)
+            if (IsStopTimer)
             {
-                isStopTimer = false;
+                IsStopTimer = false;
                 btnStopTimer.Text = "Stop";
             }
             else
             {
-                isStopTimer = true;
+                IsStopTimer = true;
                 btnStopTimer.Text = "Start";
             }
 
         }
 
+        //select algorithm mode (OpenGL or theory)
         private void cbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selected = cbAlgorithm.SelectedItem.ToString();
@@ -336,14 +377,19 @@ namespace Paint
             }
         }
 
+
+        //erase drawn objects
         private void btnClearShape_Click(object sender, EventArgs e)
         {
+            //clear drawn objects
             DrawObjects.Clear();
+            //set all timer to 0.000 ms
             btnResetTimer_Click(btnResetTimer, e);
         }
 
         private void btnResetTimer_Click(object sender, EventArgs e)
         {
+            //set label timer to 0.000 ms
             lbLineGLTimer.Text = "Line:       0.000 ms";
             lbCirGLTimer.Text = "Circle:        0.000 ms";
             lbEllipseGLTimer.Text = "Ellipse:      0.000 ms";

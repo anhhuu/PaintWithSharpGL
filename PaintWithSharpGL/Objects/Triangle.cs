@@ -24,7 +24,7 @@ namespace Paint.Objects
         public Color Color { get; set; }
         public int LineWidth { get; set; }
 
-        public void DrawWithOpenGL(OpenGL gl)
+        public void DrawWithOpenGLBuildIn(OpenGL gl)
         {
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
@@ -105,7 +105,7 @@ namespace Paint.Objects
             gl.Flush();
         }
 
-        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        public void DrawWithTheoreticalAlgorithm(OpenGL gl)
         {
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
@@ -133,13 +133,13 @@ namespace Paint.Objects
 
             //connect 3 vertices with line using line drawing algorithm
             Line l1 = new Line(StartPoint, C, Color, LineWidth);
-            l1.DrawWithTheoryAlgorithm(gl);
+            l1.DrawWithTheoreticalAlgorithm(gl);
 
             Line l2 = new Line(C, EndPoint, Color, LineWidth);
-            l2.DrawWithTheoryAlgorithm(gl);
+            l2.DrawWithTheoreticalAlgorithm(gl);
 
             Line l3 = new Line(EndPoint, StartPoint, Color, LineWidth);
-            l3.DrawWithTheoryAlgorithm(gl);
+            l3.DrawWithTheoreticalAlgorithm(gl);
         }
 
         public string getTypeOfObject()

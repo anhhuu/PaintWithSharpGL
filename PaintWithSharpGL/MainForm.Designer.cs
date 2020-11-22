@@ -33,13 +33,13 @@
             this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.cbLineWidth = new System.Windows.Forms.ComboBox();
             this.gbShape = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnHexagon = new System.Windows.Forms.Button();
             this.btnPentagon = new System.Windows.Forms.Button();
             this.btnLine = new System.Windows.Forms.Button();
             this.btnTriangle = new System.Windows.Forms.Button();
             this.btnEllipse = new System.Windows.Forms.Button();
             this.btnCircle = new System.Windows.Forms.Button();
-            this.btnRec = new System.Windows.Forms.Button();
+            this.btnRectangle = new System.Windows.Forms.Button();
             this.gbSize = new System.Windows.Forms.GroupBox();
             this.gbColor = new System.Windows.Forms.GroupBox();
             this.lbStatus = new System.Windows.Forms.Label();
@@ -47,6 +47,7 @@
             this.gbDrawing = new System.Windows.Forms.GroupBox();
             this.gbTimer = new System.Windows.Forms.GroupBox();
             this.lbAlgorithm = new System.Windows.Forms.Label();
+            this.btnResetTimer = new System.Windows.Forms.Button();
             this.btnStopTimer = new System.Windows.Forms.Button();
             this.lbTriGLTimer = new System.Windows.Forms.Label();
             this.lbEllipseGLTimer = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@
             this.gbAlgorithm = new System.Windows.Forms.GroupBox();
             this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.btnClearShape = new System.Windows.Forms.Button();
-            this.btnResetTimer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.gbShape.SuspendLayout();
             this.gbSize.SuspendLayout();
@@ -114,13 +114,13 @@
             // 
             // gbShape
             // 
-            this.gbShape.Controls.Add(this.button1);
+            this.gbShape.Controls.Add(this.btnHexagon);
             this.gbShape.Controls.Add(this.btnPentagon);
             this.gbShape.Controls.Add(this.btnLine);
             this.gbShape.Controls.Add(this.btnTriangle);
             this.gbShape.Controls.Add(this.btnEllipse);
             this.gbShape.Controls.Add(this.btnCircle);
-            this.gbShape.Controls.Add(this.btnRec);
+            this.gbShape.Controls.Add(this.btnRectangle);
             this.gbShape.Location = new System.Drawing.Point(1035, 72);
             this.gbShape.Name = "gbShape";
             this.gbShape.Size = new System.Drawing.Size(143, 231);
@@ -128,15 +128,15 @@
             this.gbShape.TabStop = false;
             this.gbShape.Text = "Shapes";
             // 
-            // button1
+            // btnHexagon
             // 
-            this.button1.Location = new System.Drawing.Point(34, 194);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(69, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Hexagon";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.btnHexagon_Click);
+            this.btnHexagon.Location = new System.Drawing.Point(34, 194);
+            this.btnHexagon.Name = "btnHexagon";
+            this.btnHexagon.Size = new System.Drawing.Size(69, 23);
+            this.btnHexagon.TabIndex = 1;
+            this.btnHexagon.Text = "Hexagon";
+            this.btnHexagon.UseVisualStyleBackColor = true;
+            this.btnHexagon.Click += new System.EventHandler(this.btnHexagon_Click);
             // 
             // btnPentagon
             // 
@@ -188,15 +188,15 @@
             this.btnCircle.UseVisualStyleBackColor = true;
             this.btnCircle.Click += new System.EventHandler(this.btnCircle_Click);
             // 
-            // btnRec
+            // btnRectangle
             // 
-            this.btnRec.Location = new System.Drawing.Point(34, 136);
-            this.btnRec.Name = "btnRec";
-            this.btnRec.Size = new System.Drawing.Size(69, 23);
-            this.btnRec.TabIndex = 1;
-            this.btnRec.Text = "Rectangle";
-            this.btnRec.UseVisualStyleBackColor = true;
-            this.btnRec.Click += new System.EventHandler(this.btnRec_Click);
+            this.btnRectangle.Location = new System.Drawing.Point(34, 136);
+            this.btnRectangle.Name = "btnRectangle";
+            this.btnRectangle.Size = new System.Drawing.Size(69, 23);
+            this.btnRectangle.TabIndex = 1;
+            this.btnRectangle.Text = "Rectangle";
+            this.btnRectangle.UseVisualStyleBackColor = true;
+            this.btnRectangle.Click += new System.EventHandler(this.btnRec_Click);
             // 
             // gbSize
             // 
@@ -273,6 +273,16 @@
             this.lbAlgorithm.Name = "lbAlgorithm";
             this.lbAlgorithm.Size = new System.Drawing.Size(0, 13);
             this.lbAlgorithm.TabIndex = 10;
+            // 
+            // btnResetTimer
+            // 
+            this.btnResetTimer.Location = new System.Drawing.Point(515, 33);
+            this.btnResetTimer.Name = "btnResetTimer";
+            this.btnResetTimer.Size = new System.Drawing.Size(56, 23);
+            this.btnResetTimer.TabIndex = 9;
+            this.btnResetTimer.Text = "Reset";
+            this.btnResetTimer.UseVisualStyleBackColor = true;
+            this.btnResetTimer.Click += new System.EventHandler(this.btnResetTimer_Click);
             // 
             // btnStopTimer
             // 
@@ -381,16 +391,6 @@
             this.btnClearShape.UseVisualStyleBackColor = true;
             this.btnClearShape.Click += new System.EventHandler(this.btnClearShape_Click);
             // 
-            // btnResetTimer
-            // 
-            this.btnResetTimer.Location = new System.Drawing.Point(515, 33);
-            this.btnResetTimer.Name = "btnResetTimer";
-            this.btnResetTimer.Size = new System.Drawing.Size(56, 23);
-            this.btnResetTimer.TabIndex = 9;
-            this.btnResetTimer.Text = "Reset";
-            this.btnResetTimer.UseVisualStyleBackColor = true;
-            this.btnResetTimer.Click += new System.EventHandler(this.btnResetTimer_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -433,12 +433,12 @@
         private System.Windows.Forms.ColorDialog colorDlg;
         private System.Windows.Forms.ComboBox cbLineWidth;
         private System.Windows.Forms.GroupBox gbShape;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnHexagon;
         private System.Windows.Forms.Button btnPentagon;
         private System.Windows.Forms.Button btnLine;
         private System.Windows.Forms.Button btnTriangle;
         private System.Windows.Forms.Button btnCircle;
-        private System.Windows.Forms.Button btnRec;
+        private System.Windows.Forms.Button btnRectangle;
         private System.Windows.Forms.GroupBox gbSize;
         private System.Windows.Forms.GroupBox gbColor;
         private System.Windows.Forms.Label lbStatus;

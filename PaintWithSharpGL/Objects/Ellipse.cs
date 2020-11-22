@@ -57,7 +57,7 @@ namespace Paint.Objects
 
         public Color Color { get; set; }
         public int LineWidth { get; set; }
-        public void DrawWithOpenGL(OpenGL gl)
+        public void DrawWithOpenGLBuildIn(OpenGL gl)
         {
 			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
@@ -74,7 +74,7 @@ namespace Paint.Objects
             gl.Flush();
         }
 
-        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        public void DrawWithTheoreticalAlgorithm(OpenGL gl)
         {
 			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);

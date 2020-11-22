@@ -23,7 +23,7 @@ namespace Paint.Objects
         public Color Color { get; set; }
         public int LineWidth { get; set; }
 
-        public void DrawWithOpenGL(OpenGL gl)
+        public void DrawWithOpenGLBuildIn(OpenGL gl)
         {
             //Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
@@ -53,7 +53,7 @@ namespace Paint.Objects
             gl.Flush();
         }
 
-        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        public void DrawWithTheoreticalAlgorithm(OpenGL gl)
         {
             //Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
@@ -62,19 +62,19 @@ namespace Paint.Objects
             //Determine the 4 points of a rectangle and connect it with line drawing theoretical algorithm
             Line l1 = new Line(new Point(StartPoint.X, StartPoint.Y),
                 new Point(StartPoint.X, EndPoint.Y), Color, LineWidth);
-            l1.DrawWithTheoryAlgorithm(gl);
+            l1.DrawWithTheoreticalAlgorithm(gl);
 
             Line l2 = new Line(new Point(StartPoint.X, StartPoint.Y),
                 new Point(EndPoint.X, StartPoint.Y), Color, LineWidth);
-            l2.DrawWithTheoryAlgorithm(gl);
+            l2.DrawWithTheoreticalAlgorithm(gl);
 
             Line l3 = new Line(new Point(StartPoint.X, EndPoint.Y),
                 new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
-            l3.DrawWithTheoryAlgorithm(gl);
+            l3.DrawWithTheoreticalAlgorithm(gl);
 
             Line l4 = new Line(new Point(EndPoint.X, StartPoint.Y),
                 new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
-            l4.DrawWithTheoryAlgorithm(gl);
+            l4.DrawWithTheoreticalAlgorithm(gl);
 
         }
         public string getTypeOfObject()
