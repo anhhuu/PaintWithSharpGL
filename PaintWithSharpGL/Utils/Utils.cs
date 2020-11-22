@@ -10,6 +10,7 @@ namespace Paint.Utils
 {
     class Utils
     {
+        //set color for pixel
         public static void setPixel(int x, int y, OpenGL gl, Color color, float width) // set pixel at coordinate (x,y) with custom appearance
         {
             gl.PointSize(width);
@@ -20,7 +21,9 @@ namespace Paint.Utils
             gl.Flush();
             gl.LineWidth((float)1.0);
         }
-        public static double calcDistance(Point start, Point end) // length of dianogal line
+
+        //calculate distance between two point
+        public static double getDistanceTowPoint(Point start, Point end)
         {
             double distance = Math.Sqrt(Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2));
             return distance;

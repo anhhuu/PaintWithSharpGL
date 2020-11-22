@@ -64,25 +64,28 @@ namespace Paint.Objects
 
             //SOLUTION 2: Calculate the C point based on the affine transforms in OpenGL.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
-            //Có 3 loại ma trận trong OpenGL, Projection (xử lý phép chiếu), Model (phép biến đổi affine), View,
-            //dòng trên xác định với OpenGL mình dùng ma trận model
+            //swith model matrix mode
 
             gl.LoadIdentity();
 
             gl.PushMatrix();
-            //Đẩy ma trận model với những thông số ở dưới
+            //push model matrix with infos below
+
+            //3. transtale EndPoint with O(0,0)->StartPoint vector
             gl.Translate(StartPoint.X, StartPoint.Y, 0.0f);
+            //2. rotate EndPoint with the center of rotation is the origin, the rotation angle is 60
             gl.Rotate(60.0, 0.0, 0.0, 1.0);
+            //1. transtale EndPoint with StartPoint->O(0,0) vector
             gl.Translate(-StartPoint.X, -StartPoint.Y, 0.0f);
-            //Các phép biến đổi sẽ thực hiện ngược từ dưới lên
+            
+            //draw first edge of triangle
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(StartPoint.X, StartPoint.Y);
             gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
-            //Các đối tượng được vẽ trong đoạn Begin End sẽ chịu ảnh hưởng bới những phép biến đổi affine ở trên
 
             gl.PopMatrix();
-            //Dùng xong ma trận Model, trả thiết lập về cho OpenGL, tránh mọi đối tượng khác đều bị ảnh hưởng
+            //pop the model matrix
 
             gl.PushMatrix();
             gl.Translate(EndPoint.X, EndPoint.Y, 0.0f);
@@ -104,20 +107,31 @@ namespace Paint.Objects
 
         public void DrawWithTheoryAlgorithm(OpenGL gl)
         {
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+            gl.LineWidth(LineWidth);
+
             double degInRad = 60 * DEGTORAD;
+
+            //C is 3rd vertex, obtained by rotating the EndPoint with the center of rotation as
+            //the StartPoint and the rotation angle of 60 degrees
             Point C = new Point();
+
+            //transtale EndPoint with StartPoint->O(0,0) vector, store C
             C.X = EndPoint.X - StartPoint.X;
             C.Y = EndPoint.Y - StartPoint.Y;
 
             double xC_last = C.X;
             double yC_last = C.Y;
 
+            //rotate EndPoint with the center of rotation is the origin, the rotation angle is 60
             C.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
             C.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
 
+            //transtale EndPoint with O(0,0)->StartPoint vector
             C.X += StartPoint.X;
             C.Y += StartPoint.Y;
 
+            //connect 3 vertices with line using line drawing algorithm
             Line l1 = new Line(StartPoint, C, Color, LineWidth);
             l1.DrawWithTheoryAlgorithm(gl);
 

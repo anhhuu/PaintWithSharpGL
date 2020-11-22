@@ -25,9 +25,11 @@ namespace Paint.Objects
 
         public void DrawWithOpenGL(OpenGL gl)
         {
-            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0); 
+            //Set color, line width
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(this.LineWidth);
-          
+
+            //determine the 4 vertices of a rectangle and connect it with lines
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(StartPoint.X, StartPoint.Y);
             gl.Vertex(StartPoint.X, EndPoint.Y);
@@ -38,37 +40,42 @@ namespace Paint.Objects
             gl.Vertex(EndPoint.X, StartPoint.Y);
             gl.End();
 
-            gl.Begin(OpenGL.GL_LINES); 
+            gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(StartPoint.X, EndPoint.Y);
             gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
 
-            gl.Begin(OpenGL.GL_LINES); 
+            gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(EndPoint.X, StartPoint.Y);
             gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
-            
+
             gl.Flush();
         }
 
         public void DrawWithTheoryAlgorithm(OpenGL gl)
         {
-            Line l1 = new Line(new Point(StartPoint.X, StartPoint.Y), 
+            //Set color, line width
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+            gl.LineWidth(LineWidth);
+
+            //Determine the 4 points of a rectangle and connect it with line drawing theoretical algorithm
+            Line l1 = new Line(new Point(StartPoint.X, StartPoint.Y),
                 new Point(StartPoint.X, EndPoint.Y), Color, LineWidth);
+            l1.DrawWithTheoryAlgorithm(gl);
 
             Line l2 = new Line(new Point(StartPoint.X, StartPoint.Y),
                 new Point(EndPoint.X, StartPoint.Y), Color, LineWidth);
+            l2.DrawWithTheoryAlgorithm(gl);
 
             Line l3 = new Line(new Point(StartPoint.X, EndPoint.Y),
                 new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
+            l3.DrawWithTheoryAlgorithm(gl);
 
             Line l4 = new Line(new Point(EndPoint.X, StartPoint.Y),
                 new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
-
-            l1.DrawWithTheoryAlgorithm(gl);
-            l2.DrawWithTheoryAlgorithm(gl);
-            l3.DrawWithTheoryAlgorithm(gl);
             l4.DrawWithTheoryAlgorithm(gl);
+
         }
         public string getTypeOfObject()
         {

@@ -24,7 +24,7 @@ namespace Paint.Objects
             this.Color = color;
             this.LineWidth = lineWidth;
             this.Edge = edge;
-            Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+            Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
         }
 
         public Point StartPoint
@@ -33,7 +33,7 @@ namespace Paint.Objects
             set
             {
                 CenterPoint = value;
-                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+                Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
             }
         }
         public Point EndPoint
@@ -42,7 +42,7 @@ namespace Paint.Objects
             set
             {
                 BorderPoint = value;
-                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+                Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
             }
         }
 
@@ -50,30 +50,37 @@ namespace Paint.Objects
         public int LineWidth { get; set; }
         public void DrawWithOpenGL(OpenGL gl)
         {
+			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
 
+            //use the idea of ​​drawing a circle, with the arcs divided by the number of edges of the polygon
             gl.Begin(OpenGL.GL_LINE_LOOP);
+
+            //each arc have circular measure is 360/num of edges
             int angle = 360 / Edge;
 
             for (int i = 0; i <= 360; i += angle)
             {
                 double degInRad = i * DEGTORAD;
-                Point A = new Point(CenterPoint.X, CenterPoint.Y);
-                Point B = new Point(BorderPoint.X, BorderPoint.Y);
-                Point D = new Point();
-                D.X = B.X - A.X;
-                D.Y = B.Y - A.Y;
 
-                double xC_last = D.X;
-                double yC_last = D.Y;
+                //translate center point to (0,0)
+                Point vertexN = new Point();
+                vertexN.X = BorderPoint.X - CenterPoint.X;
+                vertexN.Y = BorderPoint.Y - CenterPoint.Y;
 
-                D.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
-                D.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
+                //save the vertex last
+                double vertexX_last = vertexN.X;
+                double vertexY_last = vertexN.Y;
 
-                D.X += A.X;
-                D.Y += A.Y;
-                gl.Vertex(D.X, D.Y);
+                //rotate vertex with increase agle
+                vertexN.X = (int)(vertexX_last * Math.Cos(degInRad) - vertexY_last * Math.Sin(degInRad));
+                vertexN.Y = (int)(vertexX_last * Math.Sin(degInRad) + vertexY_last * Math.Cos(degInRad));
+
+                //translate center point to center point started
+                vertexN.X += CenterPoint.X;
+                vertexN.Y += CenterPoint.Y;
+                gl.Vertex(vertexN.X, vertexN.Y);
             }
 
             gl.End();
@@ -83,6 +90,7 @@ namespace Paint.Objects
 
         public void DrawWithTheoryAlgorithm(OpenGL gl)
         {
+			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
 
@@ -93,25 +101,26 @@ namespace Paint.Objects
             {
                 double degInRad = i * DEGTORAD;
                 
-                Point borderPointN = new Point();
-                borderPointN.X = BorderPoint.X - CenterPoint.X;
-                borderPointN.Y = BorderPoint.Y - CenterPoint.Y;
+                Point vertexN = new Point();
+                vertexN.X = BorderPoint.X - CenterPoint.X;
+                vertexN.Y = BorderPoint.Y - CenterPoint.Y;
 
-                double xC_last = borderPointN.X;
-                double yC_last = borderPointN.Y;
+                double vertexX_last = vertexN.X;
+                double vertexY_last = vertexN.Y;
 
-                borderPointN.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
-                borderPointN.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
+                vertexN.X = (int)(vertexX_last * Math.Cos(degInRad) - vertexY_last * Math.Sin(degInRad));
+                vertexN.Y = (int)(vertexX_last * Math.Sin(degInRad) + vertexY_last * Math.Cos(degInRad));
 
-                borderPointN.X += CenterPoint.X;
-                borderPointN.Y += CenterPoint.Y;
+                vertexN.X += CenterPoint.X;
+                vertexN.Y += CenterPoint.Y;
 
-                points[j] = new Point(borderPointN.X, borderPointN.Y);
+                //save vertex of polygon to draw with line drawing theoretical algorithm
+                points[j] = new Point(vertexN.X, vertexN.Y);
             }
             
-            for(int i = 0, j = 1; i < points.Length; i++, j++)
+            //loop and draw each edge with line drawing theoretical algorithm
+            for (int i = 0, j = 1; i < points.Length; i++, j++)
             {
-                
                 if(j == points.Length)
                 {
                     j = 0;

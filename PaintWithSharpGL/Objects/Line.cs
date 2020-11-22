@@ -1,10 +1,6 @@
 ﻿using SharpGL;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Paint.Objects
 {
@@ -18,15 +14,18 @@ namespace Paint.Objects
             this.LineWidth = lineWidth;
        }
 
-        public Point StartPoint { get; set; }
-        public Point EndPoint { get; set; }
+		public Point StartPoint { get; set; }
+		public Point EndPoint { get; set; }
         public Color Color { get; set; }
         public int LineWidth { get; set; }
 
         public void DrawWithOpenGL(OpenGL gl)
         {
+			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0); 
             gl.LineWidth(LineWidth);
+
+			//Draw line using GL_LINES
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(StartPoint.X, StartPoint.Y);
             gl.Vertex(EndPoint.X, EndPoint.Y);
@@ -37,54 +36,68 @@ namespace Paint.Objects
 
         public void DrawWithTheoryAlgorithm(OpenGL gl)
         {
-			int dx, dy, i, e;
-			int incx, incy, inc1, inc2;
-			int x, y;
+			//Set color, line width
+			gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+			gl.LineWidth(LineWidth);
+
+			int dx, dy, i, p0;
+			int incX, incY, incGreaterThanOrEqualToZero, incLessThanZero;
+			int x, y; //x_k, y_k
 
 			dx = Math.Abs(EndPoint.X - StartPoint.X);
 			dy = Math.Abs(EndPoint.Y - StartPoint.Y);
 
-			incx = 1;
-			if (EndPoint.X < StartPoint.X) incx = -1;
-			incy = 1;
-			if (EndPoint.Y < StartPoint.Y) incy = -1;
+			incX = 1;
+			if (EndPoint.X < StartPoint.X)
+			{
+				incX = -1; 
+			}
+			
+			incY = 1;
+			if (EndPoint.Y < StartPoint.Y)
+			{
+				incY = -1;
+			}
+
 			x = StartPoint.X; y = StartPoint.Y;
-			if (dx > dy)
+			if (dx > dy) //0 <= slope < 1
 			{
 				Utils.Utils.setPixel(x, y, gl, Color, LineWidth);
-				e = 2 * dy - dx;
-				inc1 = 2 * (dy - dx);
-				inc2 = 2 * dy;
+				p0 = 2 * dy - dx; 
+				incGreaterThanOrEqualToZero = 2 * (dy - dx); //increased value when Pk less than 0
+				incLessThanZero = 2 * dy; //increased value when Pk less than 0
 				for (i = 0; i < dx; i++)
 				{
-					if (e >= 0)
+					if (p0 >= 0)
 					{
-						y += incy;
-						e += inc1;
+						y += incY;
+						p0 += incGreaterThanOrEqualToZero;
 					}
 					else
-						e += inc2;
-					x += incx;
+                    {
+						p0 += incLessThanZero;
+                    }
+					x += incX;
 					Utils.Utils.setPixel(x, y, gl, Color, LineWidth);
 				}
 
 			}
-			else
+			else //slope >= 1
 			{
 				Utils.Utils.setPixel(x, y, gl, Color, LineWidth);
-				e = 2 * dx - dy;
-				inc1 = 2 * (dx - dy);
-				inc2 = 2 * dx;
+				p0 = 2 * dx - dy;
+				incGreaterThanOrEqualToZero = 2 * (dx - dy);
+				incLessThanZero = 2 * dx;
 				for (i = 0; i < dy; i++)
 				{
-					if (e >= 0)
+					if (p0 >= 0)
 					{
-						x += incx;
-						e += inc1;
+						x += incX;
+						p0 += incGreaterThanOrEqualToZero;
 					}
 					else
-						e += inc2;
-					y += incy;
+						p0 += incLessThanZero;
+					y += incY;
 					Utils.Utils.setPixel(x, y, gl, Color, LineWidth);
 				}
 			}

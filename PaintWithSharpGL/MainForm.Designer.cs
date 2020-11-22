@@ -32,7 +32,7 @@
             this.btnColorTable = new System.Windows.Forms.Button();
             this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.cbLineWidth = new System.Windows.Forms.ComboBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbShape = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnPentagon = new System.Windows.Forms.Button();
             this.btnLine = new System.Windows.Forms.Button();
@@ -40,11 +40,11 @@
             this.btnEllipse = new System.Windows.Forms.Button();
             this.btnCircle = new System.Windows.Forms.Button();
             this.btnRec = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gbSize = new System.Windows.Forms.GroupBox();
+            this.gbColor = new System.Windows.Forms.GroupBox();
             this.lbStatus = new System.Windows.Forms.Label();
             this.lbLineGLTimer = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.gbDrawing = new System.Windows.Forms.GroupBox();
             this.gbTimer = new System.Windows.Forms.GroupBox();
             this.lbAlgorithm = new System.Windows.Forms.Label();
             this.btnStopTimer = new System.Windows.Forms.Button();
@@ -54,19 +54,19 @@
             this.lbHexGLTimer = new System.Windows.Forms.Label();
             this.lbRecGLTimer = new System.Windows.Forms.Label();
             this.lbCirGLTimer = new System.Windows.Forms.Label();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.gbDrawArea = new System.Windows.Forms.GroupBox();
+            this.gbAlgorithm = new System.Windows.Forms.GroupBox();
             this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.btnClearShape = new System.Windows.Forms.Button();
             this.btnResetTimer = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.gbShape.SuspendLayout();
+            this.gbSize.SuspendLayout();
+            this.gbColor.SuspendLayout();
+            this.gbDrawing.SuspendLayout();
             this.gbTimer.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
+            this.gbDrawArea.SuspendLayout();
+            this.gbAlgorithm.SuspendLayout();
             this.SuspendLayout();
             // 
             // openGLControl
@@ -112,21 +112,21 @@
             this.cbLineWidth.Text = "1";
             this.cbLineWidth.SelectedIndexChanged += new System.EventHandler(this.cbLineWidth_SelectedIndexChanged);
             // 
-            // groupBox1
+            // gbShape
             // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.btnPentagon);
-            this.groupBox1.Controls.Add(this.btnLine);
-            this.groupBox1.Controls.Add(this.btnTriangle);
-            this.groupBox1.Controls.Add(this.btnEllipse);
-            this.groupBox1.Controls.Add(this.btnCircle);
-            this.groupBox1.Controls.Add(this.btnRec);
-            this.groupBox1.Location = new System.Drawing.Point(1035, 72);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(143, 231);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Shapes";
+            this.gbShape.Controls.Add(this.button1);
+            this.gbShape.Controls.Add(this.btnPentagon);
+            this.gbShape.Controls.Add(this.btnLine);
+            this.gbShape.Controls.Add(this.btnTriangle);
+            this.gbShape.Controls.Add(this.btnEllipse);
+            this.gbShape.Controls.Add(this.btnCircle);
+            this.gbShape.Controls.Add(this.btnRec);
+            this.gbShape.Location = new System.Drawing.Point(1035, 72);
+            this.gbShape.Name = "gbShape";
+            this.gbShape.Size = new System.Drawing.Size(143, 231);
+            this.gbShape.TabIndex = 4;
+            this.gbShape.TabStop = false;
+            this.gbShape.Text = "Shapes";
             // 
             // button1
             // 
@@ -198,54 +198,54 @@
             this.btnRec.UseVisualStyleBackColor = true;
             this.btnRec.Click += new System.EventHandler(this.btnRec_Click);
             // 
-            // groupBox2
+            // gbSize
             // 
-            this.groupBox2.Controls.Add(this.cbLineWidth);
-            this.groupBox2.Location = new System.Drawing.Point(1035, 316);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(143, 52);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Size";
+            this.gbSize.Controls.Add(this.cbLineWidth);
+            this.gbSize.Location = new System.Drawing.Point(1035, 316);
+            this.gbSize.Name = "gbSize";
+            this.gbSize.Size = new System.Drawing.Size(143, 52);
+            this.gbSize.TabIndex = 5;
+            this.gbSize.TabStop = false;
+            this.gbSize.Text = "Size";
             // 
-            // groupBox3
+            // gbColor
             // 
-            this.groupBox3.Controls.Add(this.btnColorTable);
-            this.groupBox3.Location = new System.Drawing.Point(1035, 396);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(143, 52);
-            this.groupBox3.TabIndex = 6;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Color";
+            this.gbColor.Controls.Add(this.btnColorTable);
+            this.gbColor.Location = new System.Drawing.Point(1035, 396);
+            this.gbColor.Name = "gbColor";
+            this.gbColor.Size = new System.Drawing.Size(143, 52);
+            this.gbColor.TabIndex = 6;
+            this.gbColor.TabStop = false;
+            this.gbColor.Text = "Color";
             // 
             // lbStatus
             // 
             this.lbStatus.AutoSize = true;
-            this.lbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbStatus.Location = new System.Drawing.Point(1, 20);
+            this.lbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbStatus.Location = new System.Drawing.Point(6, 20);
             this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(33, 13);
+            this.lbStatus.Size = new System.Drawing.Size(45, 16);
             this.lbStatus.TabIndex = 7;
             this.lbStatus.Text = "None";
             // 
             // lbLineGLTimer
             // 
             this.lbLineGLTimer.AutoSize = true;
-            this.lbLineGLTimer.Location = new System.Drawing.Point(6, 16);
+            this.lbLineGLTimer.Location = new System.Drawing.Point(6, 19);
             this.lbLineGLTimer.Name = "lbLineGLTimer";
             this.lbLineGLTimer.Size = new System.Drawing.Size(94, 13);
             this.lbLineGLTimer.TabIndex = 8;
             this.lbLineGLTimer.Text = "Line:       0.000 ms";
             // 
-            // groupBox4
+            // gbDrawing
             // 
-            this.groupBox4.Controls.Add(this.lbStatus);
-            this.groupBox4.Location = new System.Drawing.Point(1035, 12);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(143, 52);
-            this.groupBox4.TabIndex = 9;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Drawing";
+            this.gbDrawing.Controls.Add(this.lbStatus);
+            this.gbDrawing.Location = new System.Drawing.Point(936, 12);
+            this.gbDrawing.Name = "gbDrawing";
+            this.gbDrawing.Size = new System.Drawing.Size(242, 52);
+            this.gbDrawing.TabIndex = 9;
+            this.gbDrawing.TabStop = false;
+            this.gbDrawing.Text = "Drawing";
             // 
             // gbTimer
             // 
@@ -261,7 +261,7 @@
             this.gbTimer.Controls.Add(this.lbLineGLTimer);
             this.gbTimer.Location = new System.Drawing.Point(12, 4);
             this.gbTimer.Name = "gbTimer";
-            this.gbTimer.Size = new System.Drawing.Size(510, 62);
+            this.gbTimer.Size = new System.Drawing.Size(577, 62);
             this.gbTimer.TabIndex = 10;
             this.gbTimer.TabStop = false;
             this.gbTimer.Text = "OpenGL Algorithm Timer";
@@ -276,7 +276,7 @@
             // 
             // btnStopTimer
             // 
-            this.btnStopTimer.Location = new System.Drawing.Point(448, 11);
+            this.btnStopTimer.Location = new System.Drawing.Point(515, 11);
             this.btnStopTimer.Name = "btnStopTimer";
             this.btnStopTimer.Size = new System.Drawing.Size(56, 23);
             this.btnStopTimer.TabIndex = 9;
@@ -287,7 +287,7 @@
             // lbTriGLTimer
             // 
             this.lbTriGLTimer.AutoSize = true;
-            this.lbTriGLTimer.Location = new System.Drawing.Point(6, 32);
+            this.lbTriGLTimer.Location = new System.Drawing.Point(6, 35);
             this.lbTriGLTimer.Name = "lbTriGLTimer";
             this.lbTriGLTimer.Size = new System.Drawing.Size(94, 13);
             this.lbTriGLTimer.TabIndex = 8;
@@ -296,7 +296,7 @@
             // lbEllipseGLTimer
             // 
             this.lbEllipseGLTimer.AutoSize = true;
-            this.lbEllipseGLTimer.Location = new System.Drawing.Point(213, 16);
+            this.lbEllipseGLTimer.Location = new System.Drawing.Point(244, 19);
             this.lbEllipseGLTimer.Name = "lbEllipseGLTimer";
             this.lbEllipseGLTimer.Size = new System.Drawing.Size(101, 13);
             this.lbEllipseGLTimer.TabIndex = 8;
@@ -305,7 +305,7 @@
             // lbPenGLTimer
             // 
             this.lbPenGLTimer.AutoSize = true;
-            this.lbPenGLTimer.Location = new System.Drawing.Point(212, 32);
+            this.lbPenGLTimer.Location = new System.Drawing.Point(243, 35);
             this.lbPenGLTimer.Name = "lbPenGLTimer";
             this.lbPenGLTimer.Size = new System.Drawing.Size(102, 13);
             this.lbPenGLTimer.TabIndex = 8;
@@ -314,7 +314,7 @@
             // lbHexGLTimer
             // 
             this.lbHexGLTimer.AutoSize = true;
-            this.lbHexGLTimer.Location = new System.Drawing.Point(317, 32);
+            this.lbHexGLTimer.Location = new System.Drawing.Point(369, 35);
             this.lbHexGLTimer.Name = "lbHexGLTimer";
             this.lbHexGLTimer.Size = new System.Drawing.Size(99, 13);
             this.lbHexGLTimer.TabIndex = 8;
@@ -323,7 +323,7 @@
             // lbRecGLTimer
             // 
             this.lbRecGLTimer.AutoSize = true;
-            this.lbRecGLTimer.Location = new System.Drawing.Point(104, 32);
+            this.lbRecGLTimer.Location = new System.Drawing.Point(116, 35);
             this.lbRecGLTimer.Name = "lbRecGLTimer";
             this.lbRecGLTimer.Size = new System.Drawing.Size(105, 13);
             this.lbRecGLTimer.TabIndex = 8;
@@ -332,31 +332,31 @@
             // lbCirGLTimer
             // 
             this.lbCirGLTimer.AutoSize = true;
-            this.lbCirGLTimer.Location = new System.Drawing.Point(106, 16);
+            this.lbCirGLTimer.Location = new System.Drawing.Point(118, 19);
             this.lbCirGLTimer.Name = "lbCirGLTimer";
             this.lbCirGLTimer.Size = new System.Drawing.Size(103, 13);
             this.lbCirGLTimer.TabIndex = 8;
             this.lbCirGLTimer.Text = "Circle:        0.000 ms";
             // 
-            // groupBox6
+            // gbDrawArea
             // 
-            this.groupBox6.Controls.Add(this.openGLControl);
-            this.groupBox6.Location = new System.Drawing.Point(1, 72);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1028, 619);
-            this.groupBox6.TabIndex = 11;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Draw Area";
+            this.gbDrawArea.Controls.Add(this.openGLControl);
+            this.gbDrawArea.Location = new System.Drawing.Point(1, 72);
+            this.gbDrawArea.Name = "gbDrawArea";
+            this.gbDrawArea.Size = new System.Drawing.Size(1028, 619);
+            this.gbDrawArea.TabIndex = 11;
+            this.gbDrawArea.TabStop = false;
+            this.gbDrawArea.Text = "Draw Area";
             // 
-            // groupBox7
+            // gbAlgorithm
             // 
-            this.groupBox7.Controls.Add(this.cbAlgorithm);
-            this.groupBox7.Location = new System.Drawing.Point(1035, 477);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(143, 67);
-            this.groupBox7.TabIndex = 1;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Algorithm";
+            this.gbAlgorithm.Controls.Add(this.cbAlgorithm);
+            this.gbAlgorithm.Location = new System.Drawing.Point(1035, 477);
+            this.gbAlgorithm.Name = "gbAlgorithm";
+            this.gbAlgorithm.Size = new System.Drawing.Size(143, 67);
+            this.gbAlgorithm.TabIndex = 1;
+            this.gbAlgorithm.TabStop = false;
+            this.gbAlgorithm.Text = "Algorithm";
             // 
             // cbAlgorithm
             // 
@@ -373,7 +373,7 @@
             // 
             // btnClearShape
             // 
-            this.btnClearShape.Location = new System.Drawing.Point(595, 26);
+            this.btnClearShape.Location = new System.Drawing.Point(694, 29);
             this.btnClearShape.Name = "btnClearShape";
             this.btnClearShape.Size = new System.Drawing.Size(131, 23);
             this.btnClearShape.TabIndex = 12;
@@ -383,7 +383,7 @@
             // 
             // btnResetTimer
             // 
-            this.btnResetTimer.Location = new System.Drawing.Point(448, 33);
+            this.btnResetTimer.Location = new System.Drawing.Point(515, 33);
             this.btnResetTimer.Name = "btnResetTimer";
             this.btnResetTimer.Size = new System.Drawing.Size(56, 23);
             this.btnResetTimer.TabIndex = 9;
@@ -397,13 +397,13 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1184, 691);
             this.Controls.Add(this.btnClearShape);
-            this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.gbAlgorithm);
+            this.Controls.Add(this.gbDrawArea);
             this.Controls.Add(this.gbTimer);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbDrawing);
+            this.Controls.Add(this.gbColor);
+            this.Controls.Add(this.gbSize);
+            this.Controls.Add(this.gbShape);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1200, 730);
             this.MinimizeBox = false;
@@ -413,15 +413,15 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Paint Clone";
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gbShape.ResumeLayout(false);
+            this.gbSize.ResumeLayout(false);
+            this.gbColor.ResumeLayout(false);
+            this.gbDrawing.ResumeLayout(false);
+            this.gbDrawing.PerformLayout();
             this.gbTimer.ResumeLayout(false);
             this.gbTimer.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
+            this.gbDrawArea.ResumeLayout(false);
+            this.gbAlgorithm.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -432,30 +432,30 @@
         private System.Windows.Forms.Button btnColorTable;
         private System.Windows.Forms.ColorDialog colorDlg;
         private System.Windows.Forms.ComboBox cbLineWidth;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbShape;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnPentagon;
         private System.Windows.Forms.Button btnLine;
         private System.Windows.Forms.Button btnTriangle;
         private System.Windows.Forms.Button btnCircle;
         private System.Windows.Forms.Button btnRec;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox gbSize;
+        private System.Windows.Forms.GroupBox gbColor;
         private System.Windows.Forms.Label lbStatus;
         private System.Windows.Forms.Button btnEllipse;
         private System.Windows.Forms.Label lbLineGLTimer;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbDrawing;
         private System.Windows.Forms.GroupBox gbTimer;
         private System.Windows.Forms.Button btnStopTimer;
         private System.Windows.Forms.Label lbAlgorithm;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox gbDrawArea;
         private System.Windows.Forms.Label lbTriGLTimer;
         private System.Windows.Forms.Label lbEllipseGLTimer;
         private System.Windows.Forms.Label lbPenGLTimer;
         private System.Windows.Forms.Label lbHexGLTimer;
         private System.Windows.Forms.Label lbRecGLTimer;
         private System.Windows.Forms.Label lbCirGLTimer;
-        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox gbAlgorithm;
         private System.Windows.Forms.ComboBox cbAlgorithm;
         private System.Windows.Forms.Button btnClearShape;
         private System.Windows.Forms.Button btnResetTimer;

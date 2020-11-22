@@ -10,10 +10,16 @@ namespace Paint.Objects
 {
     class Circle : Shape
     {
-        private double Radius;
+        //constants used in convert degree -> radian
         private const double DEGTORAD = 3.14159 / 180;
+        
+        //Radius of circle
+        private double Radius;
 
+        //Center of circle
         private Point CenterPoint;
+        
+        //The point of the boder circle
         private Point BorderPoint;
 
         public Circle(Point start, Point end, Color color, int lineWidth)
@@ -22,8 +28,8 @@ namespace Paint.Objects
             this.BorderPoint = end;
             this.Color = color;
             this.LineWidth = lineWidth;
-            Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
-            //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+            //calc radius
+            Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
         }
 
         public Point StartPoint
@@ -32,8 +38,7 @@ namespace Paint.Objects
             set
             {
                 CenterPoint = value;
-                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
-                //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
             }
         }
         public Point EndPoint
@@ -42,8 +47,7 @@ namespace Paint.Objects
             set
             {
                 BorderPoint = value;
-                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
-                //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.getDistanceTowPoint(CenterPoint, BorderPoint);
             }
         }
 
@@ -51,9 +55,11 @@ namespace Paint.Objects
         public int LineWidth { get; set; }
         public void DrawWithOpenGL(OpenGL gl)
         {
+			//Set color, line width
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
 
+            //Divide the circle into 360 arcs, drawing each arc with a line, using GL_LINE_LOOP
             gl.Begin(OpenGL.GL_LINE_LOOP);
 
             for (int i = 0; i <= 360; i++)
@@ -69,14 +75,15 @@ namespace Paint.Objects
 
         public void DrawWithTheoryAlgorithm(OpenGL gl)
         {
-            double x = Radius, y = 0;
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+            gl.LineWidth(LineWidth);
 
-            // Printing the initial point on the axes  
-            // after translation 
+            double x = Radius, y = 0;  //x_k, y_k
+
+            //setting the initial pixel on the axes after translation 
             Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
 
-            // When radius is zero only a single 
-            // point will be printed 
+            //when radius is zero only a single pixel will be set
             if (Radius > 0)
             {
                 Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
@@ -84,36 +91,34 @@ namespace Paint.Objects
                 Utils.Utils.setPixel((int)(-y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);
             }
 
-            // Initialising the value of P 
-            double P = 1 - Radius;
+            //initialising the value of P 
+            double p0 = 1 - Radius;
             while (x > y)
             {
                 y++;
 
-                // Mid-point is inside or on the perimeter 
-                if (P <= 0)
-                    P = P + 2 * y + 1;
+                //Mid-point is inside or on the perimeter 
+                if (p0 <= 0)
+                    p0 = p0 + 2 * y + 1;
 
-                // Mid-point is outside the perimeter 
+                //Mid-point is outside the perimeter 
                 else
                 {
                     x--;
-                    P = P + 2 * y - 2 * x + 1;
+                    p0 = p0 + 2 * y - 2 * x + 1;
                 }
 
-                // All the perimeter points have already been printed 
+                //All the perimeter pixel have already been set
                 if (x < y)
                     break;
 
-                // Printing the generated point and its reflection 
-                // in the other octants after translation 
+                //setting the generated pixel and its reflection in the other octants after translation 
                 Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
                 Utils.Utils.setPixel((int)(-x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
                 Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
                 Utils.Utils.setPixel((int)(-x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
 
-                // If the generated point is on the line x = y then  
-                // the perimeter points have already been printed 
+                //if the generated pixel is on the line x = y then the perimeter pixel have already been set 
                 if (x != y)
                 {
                     Utils.Utils.setPixel((int)(y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);

@@ -17,7 +17,7 @@ namespace Paint
     {
         private Color UserColor;
         private short ShapeType;
-        private short AlgorithmType; //0: OpenGL function, 1: Theory Algorithm
+        private short AlgorithmType; //0: OpenGL function, 1: Theoretical Algorithm
         private int LineWidth;
 
         private Point StartPoint;
@@ -332,7 +332,7 @@ namespace Paint
             else
             {
                 AlgorithmType = 1;
-                gbTimer.Text = "Theory Algorithm Timer";
+                gbTimer.Text = "Theoretical Algorithm Timer";
             }
         }
 
