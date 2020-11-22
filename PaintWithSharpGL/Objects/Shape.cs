@@ -35,5 +35,7 @@ namespace Paint.Objects
         }
 
         void DrawWithOpenGL(OpenGL gl);
+        void DrawWithTheoryAlgorithm(OpenGL gl);
+        string getTypeOfObject();
     }
 }

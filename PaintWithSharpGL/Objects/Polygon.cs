@@ -24,7 +24,7 @@ namespace Paint.Objects
             this.Color = color;
             this.LineWidth = lineWidth;
             this.Edge = edge;
-            Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+            Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
         }
 
         public Point StartPoint
@@ -33,7 +33,7 @@ namespace Paint.Objects
             set
             {
                 CenterPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
             }
         }
         public Point EndPoint
@@ -42,7 +42,7 @@ namespace Paint.Objects
             set
             {
                 BorderPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
             }
         }
 
@@ -50,19 +50,17 @@ namespace Paint.Objects
         public int LineWidth { get; set; }
         public void DrawWithOpenGL(OpenGL gl)
         {
-            Point C = new Point(CenterPoint.X, gl.RenderContextProvider.Height - CenterPoint.Y);
-
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
-           
+
             gl.Begin(OpenGL.GL_LINE_LOOP);
             int angle = 360 / Edge;
 
-            for (int i = 0; i <= 360; i+=angle)
+            for (int i = 0; i <= 360; i += angle)
             {
                 double degInRad = i * DEGTORAD;
-                Point A = new Point(CenterPoint.X, gl.RenderContextProvider.Height - CenterPoint.Y);
-                Point B = new Point(BorderPoint.X, gl.RenderContextProvider.Height - BorderPoint.Y);
+                Point A = new Point(CenterPoint.X, CenterPoint.Y);
+                Point B = new Point(BorderPoint.X, BorderPoint.Y);
                 Point D = new Point();
                 D.X = B.X - A.X;
                 D.Y = B.Y - A.Y;
@@ -80,17 +78,53 @@ namespace Paint.Objects
 
             gl.End();
 
-            //gl.Begin(OpenGL.GL_LINE_LOOP);
-
-            //for (int i = 0; i <= 360; i++)
-            //{
-            //    double degInRad = i * DEGTORAD;
-            //    gl.Vertex(Math.Cos(degInRad) * Radius + C.X, Math.Sin(degInRad) * Radius + C.Y);
-            //}
-
-            //gl.End();
-
             gl.Flush();
+        }
+
+        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        {
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+            gl.LineWidth(LineWidth);
+
+            Point[] points = new Point[Edge];
+            int angle = 360 / Edge;
+
+            for (int i = 0, j = 0; i < 360; i += angle, j++)
+            {
+                double degInRad = i * DEGTORAD;
+                
+                Point borderPointN = new Point();
+                borderPointN.X = BorderPoint.X - CenterPoint.X;
+                borderPointN.Y = BorderPoint.Y - CenterPoint.Y;
+
+                double xC_last = borderPointN.X;
+                double yC_last = borderPointN.Y;
+
+                borderPointN.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
+                borderPointN.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
+
+                borderPointN.X += CenterPoint.X;
+                borderPointN.Y += CenterPoint.Y;
+
+                points[j] = new Point(borderPointN.X, borderPointN.Y);
+            }
+            
+            for(int i = 0, j = 1; i < points.Length; i++, j++)
+            {
+                
+                if(j == points.Length)
+                {
+                    j = 0;
+                }
+
+                Line l = new Line(points[i], points[j], Color, LineWidth);
+
+                l.DrawWithTheoryAlgorithm(gl);
+            }
+        }
+        public string getTypeOfObject()
+        {
+            return "Equilateral Polygon " + Edge + " edges";
         }
     }
 }

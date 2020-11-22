@@ -26,12 +26,16 @@ namespace Paint.Objects
 
         public void DrawWithOpenGL(OpenGL gl)
         {
-            /*double degInRad = 60 * DEGTORAD;
-            Point A = new Point(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            Point B = new Point(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
+            gl.LineWidth(LineWidth);
+
+            //SOLUTION 1: Calculate the C point based on the affine transforms learned in class.
+
+            /*
+            double degInRad = 60 * DEGTORAD;
             Point C = new Point();
-            C.X = B.X - A.X;
-            C.Y = B.Y - A.Y;
+            C.X = EndPoint.X - StartPoint.X;
+            C.Y = EndPoint.Y - StartPoint.Y;
 
             double xC_last = C.X;
             double yC_last = C.Y;
@@ -39,52 +43,94 @@ namespace Paint.Objects
             C.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
             C.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
 
-            C.X += A.X;
-            C.Y += A.Y;*/
+            C.X += StartPoint.X;
+            C.Y += StartPoint.Y;
 
-            gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
-            gl.LineWidth(LineWidth);
-
-            /*gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
+            gl.Begin(OpenGL.GL_LINES);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
             gl.Vertex(C.X, C.Y);
             gl.End();
 
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(C.X, C.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
-            gl.End();*/
+            gl.Vertex(EndPoint.X, EndPoint.Y);
+            gl.End();
+            
+            gl.Begin(OpenGL.GL_LINES);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
+            gl.End();
+            */
 
-
+            //SOLUTION 2: Calculate the C point based on the affine transforms in OpenGL.
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
+            //Có 3 loại ma trận trong OpenGL, Projection (xử lý phép chiếu), Model (phép biến đổi affine), View,
+            //dòng trên xác định với OpenGL mình dùng ma trận model
+
             gl.LoadIdentity();
 
             gl.PushMatrix();
-            gl.Translate(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y, 0.0f);
+            //Đẩy ma trận model với những thông số ở dưới
+            gl.Translate(StartPoint.X, StartPoint.Y, 0.0f);
             gl.Rotate(60.0, 0.0, 0.0, 1.0);
-            gl.Translate(-StartPoint.X, -(gl.RenderContextProvider.Height - StartPoint.Y), 0.0f);
+            gl.Translate(-StartPoint.X, -StartPoint.Y, 0.0f);
+            //Các phép biến đổi sẽ thực hiện ngược từ dưới lên
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
+            //Các đối tượng được vẽ trong đoạn Begin End sẽ chịu ảnh hưởng bới những phép biến đổi affine ở trên
+
             gl.PopMatrix();
+            //Dùng xong ma trận Model, trả thiết lập về cho OpenGL, tránh mọi đối tượng khác đều bị ảnh hưởng
 
             gl.PushMatrix();
-            gl.Translate(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y, 0.0f);
+            gl.Translate(EndPoint.X, EndPoint.Y, 0.0f);
             gl.Rotate(-60.0, 0.0, 0.0, 1.0);
-            gl.Translate(-EndPoint.X, -(gl.RenderContextProvider.Height - EndPoint.Y), 0.0f);
+            gl.Translate(-EndPoint.X, -EndPoint.Y, 0.0f);
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
             gl.PopMatrix();
 
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
 
             gl.Flush();
+        }
+
+        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        {
+            double degInRad = 60 * DEGTORAD;
+            Point C = new Point();
+            C.X = EndPoint.X - StartPoint.X;
+            C.Y = EndPoint.Y - StartPoint.Y;
+
+            double xC_last = C.X;
+            double yC_last = C.Y;
+
+            C.X = (int)(xC_last * Math.Cos(degInRad) - yC_last * Math.Sin(degInRad));
+            C.Y = (int)(xC_last * Math.Sin(degInRad) + yC_last * Math.Cos(degInRad));
+
+            C.X += StartPoint.X;
+            C.Y += StartPoint.Y;
+
+            Line l1 = new Line(StartPoint, C, Color, LineWidth);
+            l1.DrawWithTheoryAlgorithm(gl);
+
+            Line l2 = new Line(C, EndPoint, Color, LineWidth);
+            l2.DrawWithTheoryAlgorithm(gl);
+
+            Line l3 = new Line(EndPoint, StartPoint, Color, LineWidth);
+            l3.DrawWithTheoryAlgorithm(gl);
+        }
+
+        public string getTypeOfObject()
+        {
+            return "Equilateral Triangle";
         }
     }
 }

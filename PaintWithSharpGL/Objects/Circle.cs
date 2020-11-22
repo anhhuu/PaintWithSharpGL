@@ -22,7 +22,8 @@ namespace Paint.Objects
             this.BorderPoint = end;
             this.Color = color;
             this.LineWidth = lineWidth;
-            Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+            Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+            //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
         }
 
         public Point StartPoint
@@ -31,7 +32,8 @@ namespace Paint.Objects
             set
             {
                 CenterPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+                //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
             }
         }
         public Point EndPoint
@@ -40,7 +42,8 @@ namespace Paint.Objects
             set
             {
                 BorderPoint = value;
-                Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
+                Radius = Utils.Utils.calcDistance(CenterPoint, BorderPoint);
+                //Radius = Math.Sqrt((CenterPoint.X - BorderPoint.X) * (CenterPoint.X - BorderPoint.X) + (CenterPoint.Y - BorderPoint.Y) * (CenterPoint.Y - BorderPoint.Y));
             }
         }
 
@@ -48,8 +51,6 @@ namespace Paint.Objects
         public int LineWidth { get; set; }
         public void DrawWithOpenGL(OpenGL gl)
         {
-            Point C = new Point(CenterPoint.X, gl.RenderContextProvider.Height - CenterPoint.Y);
-
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0);
             gl.LineWidth(LineWidth);
 
@@ -58,12 +59,74 @@ namespace Paint.Objects
             for (int i = 0; i <= 360; i++)
             {
                 double degInRad = i * DEGTORAD;
-                gl.Vertex(Math.Cos(degInRad) * Radius + C.X, Math.Sin(degInRad) * Radius + C.Y);
+                gl.Vertex(Math.Cos(degInRad) * Radius + CenterPoint.X, Math.Sin(degInRad) * Radius + CenterPoint.Y);
             }
 
             gl.End();
 
             gl.Flush();
+        }
+
+        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        {
+            double x = Radius, y = 0;
+
+            // Printing the initial point on the axes  
+            // after translation 
+            Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
+
+            // When radius is zero only a single 
+            // point will be printed 
+            if (Radius > 0)
+            {
+                Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
+                Utils.Utils.setPixel((int)(y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);
+                Utils.Utils.setPixel((int)(-y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);
+            }
+
+            // Initialising the value of P 
+            double P = 1 - Radius;
+            while (x > y)
+            {
+                y++;
+
+                // Mid-point is inside or on the perimeter 
+                if (P <= 0)
+                    P = P + 2 * y + 1;
+
+                // Mid-point is outside the perimeter 
+                else
+                {
+                    x--;
+                    P = P + 2 * y - 2 * x + 1;
+                }
+
+                // All the perimeter points have already been printed 
+                if (x < y)
+                    break;
+
+                // Printing the generated point and its reflection 
+                // in the other octants after translation 
+                Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
+                Utils.Utils.setPixel((int)(-x + CenterPoint.X), (int)(y + CenterPoint.Y), gl, Color, LineWidth);
+                Utils.Utils.setPixel((int)(x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
+                Utils.Utils.setPixel((int)(-x + CenterPoint.X), (int)(-y + CenterPoint.Y), gl, Color, LineWidth);
+
+                // If the generated point is on the line x = y then  
+                // the perimeter points have already been printed 
+                if (x != y)
+                {
+                    Utils.Utils.setPixel((int)(y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);
+                    Utils.Utils.setPixel((int)(-y + CenterPoint.X), (int)(x + CenterPoint.Y), gl, Color, LineWidth);
+                    Utils.Utils.setPixel((int)(y + CenterPoint.X), (int)(-x + CenterPoint.Y), gl, Color, LineWidth);
+                    Utils.Utils.setPixel((int)(-y + CenterPoint.X), (int)(-x + CenterPoint.Y), gl, Color, LineWidth);
+                }
+            }
+        }
+
+        public string getTypeOfObject()
+        {
+            return "Circle";
         }
     }
 }

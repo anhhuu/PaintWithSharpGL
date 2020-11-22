@@ -27,34 +27,52 @@ namespace Paint.Objects
         {
             gl.Color(Color.R / 255.0, Color.G / 255.0, Color.B / 255.0, 0); 
             gl.LineWidth(this.LineWidth);
-            //gl.Begin(OpenGL.GL_QUADS);
-            //gl.Vertex(start.X, gl.RenderContextProvider.Height - start.Y);
-            //gl.Vertex(end.X, gl.RenderContextProvider.Height - start.Y);
-            //gl.Vertex(end.X, gl.RenderContextProvider.Height - end.Y);
-            //gl.Vertex(start.X, gl.RenderContextProvider.Height - end.Y);
-            //gl.End();
-
+          
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(StartPoint.X, EndPoint.Y);
             gl.End();
 
             gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
+            gl.Vertex(StartPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, StartPoint.Y);
             gl.End();
 
             gl.Begin(OpenGL.GL_LINES); 
-            gl.Vertex(StartPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(StartPoint.X, EndPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
 
             gl.Begin(OpenGL.GL_LINES); 
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - StartPoint.Y);
-            gl.Vertex(EndPoint.X, gl.RenderContextProvider.Height - EndPoint.Y);
+            gl.Vertex(EndPoint.X, StartPoint.Y);
+            gl.Vertex(EndPoint.X, EndPoint.Y);
             gl.End();
             
             gl.Flush();
+        }
+
+        public void DrawWithTheoryAlgorithm(OpenGL gl)
+        {
+            Line l1 = new Line(new Point(StartPoint.X, StartPoint.Y), 
+                new Point(StartPoint.X, EndPoint.Y), Color, LineWidth);
+
+            Line l2 = new Line(new Point(StartPoint.X, StartPoint.Y),
+                new Point(EndPoint.X, StartPoint.Y), Color, LineWidth);
+
+            Line l3 = new Line(new Point(StartPoint.X, EndPoint.Y),
+                new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
+
+            Line l4 = new Line(new Point(EndPoint.X, StartPoint.Y),
+                new Point(EndPoint.X, EndPoint.Y), Color, LineWidth);
+
+            l1.DrawWithTheoryAlgorithm(gl);
+            l2.DrawWithTheoryAlgorithm(gl);
+            l3.DrawWithTheoryAlgorithm(gl);
+            l4.DrawWithTheoryAlgorithm(gl);
+        }
+        public string getTypeOfObject()
+        {
+            return "Rectangle";
         }
     }
 }
