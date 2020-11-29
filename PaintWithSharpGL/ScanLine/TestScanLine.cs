@@ -109,7 +109,10 @@ namespace Paint.ScanLine
             List<EDGE> AET = new List<EDGE>();//Scanning line
             for (int y = ymin; y < ymax; y += XiangSu)
             {
+                //g.DrawLine(new Pen(red), new Point(10, y), new Point(20, y));
+                //g.DrawString(AET.Count.ToString(), new Font("Microsoft Yahei", 6), blue, new Point(2, y));
                 InsertNetListToAet(NET[y - ymin], ref AET);
+                //g.DrawString(y + " -> " + NET[y - ymin].Count + " -> " + AET.Count.ToString(), new Font("Microsoft Yahei", 6), blue, new Point(25, y));
                 for (int i = 0; i < AET.Count; i++)
                 {
                     //g.DrawString((((int)AET[i].xi) / XiangSu * XiangSu).ToString() + " ", new Font("Microsoft Yahei", 6), blue, new Point(400 + i * 24, y));
@@ -153,7 +156,7 @@ namespace Paint.ScanLine
                     g.Vertex(from - XiangSu / 2, y - XiangSu / 2);
                     g.Vertex(to - XiangSu / 2, y - XiangSu / 2);
                     g.End();
-                }
+                }    
             }
         }
         private void InsertNetListToAet(List<EDGE> list, ref List<EDGE> AET)
@@ -163,48 +166,43 @@ namespace Paint.ScanLine
             {
                 AET = list;
                 return;
-                List<EDGE> temp = new List<EDGE>();
-                int i = 0, j = 0;
-                while (i < list.Count && j < AET.Count)
+            }
+            List<EDGE> temp = new List<EDGE>();
+            int i = 0, j = 0;
+            while (i < list.Count && j < AET.Count)
+            {
+                if (list[i] == AET[j])
                 {
-                    if (list[i] == AET[j])
-                    {
-                        i++;
-                        temp.Add(AET[j]);
-                        j++;
-                        continue;
-                    }
-                    if (list[i] < AET[j])
-                    {
-                        temp.Add(list[i]);
-                        i++;
-                        continue;
-                    }
-                    if (list[i] > AET[j])
-                    {
-                        temp.Add(AET[j]);
-                        j++;
-                        continue;
-                    }
+                    i++;
+                    temp.Add(AET[j]);
+                    j++;
+                    continue;
                 }
-                while (i < list.Count)
+                if (list[i] < AET[j])
                 {
                     temp.Add(list[i]);
                     i++;
+                    continue;
                 }
-                while (j < AET.Count)
+                if (list[i] > AET[j])
                 {
                     temp.Add(AET[j]);
                     j++;
+                    continue;
                 }
-                AET = temp;
-                //for (int i = 0; i < list.Count; i++)
-                //{
-                //    AET.Add(list[i]);
-                //}
-                //My_Sort(ref AET);
             }
-
+            while (i < list.Count)
+            {
+                temp.Add(list[i]);
+                i++;
+            }
+            while (j < AET.Count)
+            {
+                temp.Add(AET[j]);
+                j++;
+            }
+            AET = temp;
         }
+
     }
 }
