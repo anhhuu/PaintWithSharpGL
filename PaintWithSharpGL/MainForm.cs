@@ -117,14 +117,6 @@ namespace Paint
             //clear the color and depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
-            if(fill)
-            {
-                ScanLine.TestScanLine test = new ScanLine.TestScanLine();
-                test.g = gl;
-                test.ScanLinePolygonFill(DrawObjects[0].VerticesControl, gl, 1);
-
-            }
-
             if (IsDrawing)
             {
                 if (AlgorithmType == 1)
@@ -143,6 +135,14 @@ namespace Paint
             {
                 foreach (Shape shape in DrawObjects)
                 {
+                    if (Fill)
+                    {
+                        if (AlgorithmType == 0 && shape.getTypeOfObject() != "Line" && shape.getTypeOfObject() != "Circle" && shape.getTypeOfObject() != "Ellipse")
+                        {
+                            ScanLine.ScanLine test = new ScanLine.ScanLine();
+                            test.ScanLinePolygonFill(shape.VerticesControl, gl, UserColor);
+                        }
+                    }
                     if (IsStopTimer)
                     {
                         if (AlgorithmType == 1)
@@ -435,10 +435,20 @@ namespace Paint
             lbPenGLTimer.Text = "Pentagon: 0.000 ms";
             lbHexGLTimer.Text = "Hexagon: 0.000 ms";
         }
-        private bool fill = false;
-        private void button1_Click(object sender, EventArgs e)
+        private bool Fill = false;
+
+        private void btnScanLineFill_Click(object sender, EventArgs e)
         {
-            fill = true;
+            if (!Fill)
+            {
+                Fill = true;
+                btnScanLineFill.Text = "Cancel Fill";
+            }
+            else
+            {
+                btnScanLineFill.Text = "Scan Line Fill";
+                Fill = false;
+            }
         }
     }
 }

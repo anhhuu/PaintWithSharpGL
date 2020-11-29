@@ -33,6 +33,7 @@
             this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.cbLineWidth = new System.Windows.Forms.ComboBox();
             this.gbShape = new System.Windows.Forms.GroupBox();
+            this.btnPolygon = new System.Windows.Forms.Button();
             this.btnHexagon = new System.Windows.Forms.Button();
             this.btnPentagon = new System.Windows.Forms.Button();
             this.btnLine = new System.Windows.Forms.Button();
@@ -59,8 +60,7 @@
             this.gbAlgorithm = new System.Windows.Forms.GroupBox();
             this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.btnClearShape = new System.Windows.Forms.Button();
-            this.btnPolygon = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnScanLineFill = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.gbShape.SuspendLayout();
             this.gbSize.SuspendLayout();
@@ -130,6 +130,16 @@
             this.gbShape.TabIndex = 4;
             this.gbShape.TabStop = false;
             this.gbShape.Text = "Shapes";
+            // 
+            // btnPolygon
+            // 
+            this.btnPolygon.Location = new System.Drawing.Point(13, 223);
+            this.btnPolygon.Name = "btnPolygon";
+            this.btnPolygon.Size = new System.Drawing.Size(118, 23);
+            this.btnPolygon.TabIndex = 1;
+            this.btnPolygon.Text = "Polygon";
+            this.btnPolygon.UseVisualStyleBackColor = true;
+            this.btnPolygon.Click += new System.EventHandler(this.btnPolygon_Click);
             // 
             // btnHexagon
             // 
@@ -394,32 +404,22 @@
             this.btnClearShape.UseVisualStyleBackColor = true;
             this.btnClearShape.Click += new System.EventHandler(this.btnClearShape_Click);
             // 
-            // btnPolygon
+            // btnScanLineFill
             // 
-            this.btnPolygon.Location = new System.Drawing.Point(13, 223);
-            this.btnPolygon.Name = "btnPolygon";
-            this.btnPolygon.Size = new System.Drawing.Size(118, 23);
-            this.btnPolygon.TabIndex = 1;
-            this.btnPolygon.Text = "Polygon";
-            this.btnPolygon.UseVisualStyleBackColor = true;
-            this.btnPolygon.Click += new System.EventHandler(this.btnPolygon_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1084, 612);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnScanLineFill.Location = new System.Drawing.Point(1054, 608);
+            this.btnScanLineFill.Name = "btnScanLineFill";
+            this.btnScanLineFill.Size = new System.Drawing.Size(97, 23);
+            this.btnScanLineFill.TabIndex = 13;
+            this.btnScanLineFill.Text = "Scan Line Fill";
+            this.btnScanLineFill.UseVisualStyleBackColor = true;
+            this.btnScanLineFill.Click += new System.EventHandler(this.btnScanLineFill_Click);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1184, 691);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnScanLineFill);
             this.Controls.Add(this.btnClearShape);
             this.Controls.Add(this.gbAlgorithm);
             this.Controls.Add(this.gbDrawArea);
@@ -484,7 +484,7 @@
         private System.Windows.Forms.Button btnClearShape;
         private System.Windows.Forms.Button btnResetTimer;
         private System.Windows.Forms.Button btnPolygon;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnScanLineFill;
     }
 }
 

@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 
 namespace Paint.ScanLine
 {
-    public class EDGE
+    public class Edge
     {
-        public double xi;//The x-coordinate of the lower end of the edge, in the activation linked list (AET), represents the x coordinate of the intersection of the scan line and the edge
-        public double dx;//Is a constant (reciprocal of the slope of the line) (x + dx, y + 1)
-        public int ymax;//The y value of the upper vertex of the edge
-        public static bool operator <(EDGE a, EDGE b)//Overloaded relationship
+        public double Xi;//The x-coordinate of the lower end of the edge, in the activation linked list (AET), represents the x coordinate of the intersection of the scan line and the edge
+        public double ReciSlope;//Is a constant (reciprocal of the slope of the line) (x + dx, y + 1)
+        public int Y_Upper;//The y value of the upper vertex of the edge
+        public static bool operator <(Edge a, Edge b)//Overloaded relationship
         {
-            return (Math.Abs(a.xi - b.xi) < 1 ? a.dx < b.dx : a.xi < b.xi);
+            return (Math.Abs(a.Xi - b.Xi) < 1 ? a.ReciSlope < b.ReciSlope : a.Xi < b.Xi);
         }
-        public static bool operator >(EDGE a, EDGE b)//Overloaded relationship
+        public static bool operator >(Edge a, Edge b)//Overloaded relationship
         {
-            return (Math.Abs(a.xi - b.xi) < 1 ? a.dx > b.dx : a.xi > b.xi);
+            return (Math.Abs(a.Xi - b.Xi) < 1 ? a.ReciSlope > b.ReciSlope : a.Xi > b.Xi);
         }
-        public static bool operator ==(EDGE a, EDGE b)//Overload equal to
+        public static bool operator ==(Edge a, Edge b)//Overload equal to
         {
-            return (Math.Abs(a.xi - b.xi) < 1 && a.dx == b.dx && a.ymax == b.ymax);
+            return (Math.Abs(a.Xi - b.Xi) < 1 && a.ReciSlope == b.ReciSlope && a.Y_Upper == b.Y_Upper);
         }
-        public static bool operator !=(EDGE a, EDGE b)//Overload not equal to
+        public static bool operator !=(Edge a, Edge b)//Overload not equal to
         {
-            return (Math.Abs(a.xi - b.xi) > 1 || a.dx != b.dx || a.ymax != b.ymax);
+            return (Math.Abs(a.Xi - b.Xi) > 1 || a.ReciSlope != b.ReciSlope || a.Y_Upper != b.Y_Upper);
         }
     }
 }
