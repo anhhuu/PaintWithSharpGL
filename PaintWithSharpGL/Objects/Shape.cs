@@ -38,6 +38,18 @@ namespace Paint.Objects
             set;
         }
 
+        bool Completed
+        {
+            get;
+            set;
+        }
+
+        List<Point> VerticesControl
+        {
+            get;
+            set;
+        }
+
         //draw objects using built-in functions in OpenGL
         void DrawWithOpenGLBuildIn(OpenGL gl);
 

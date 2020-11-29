@@ -59,6 +59,8 @@
             this.gbAlgorithm = new System.Windows.Forms.GroupBox();
             this.cbAlgorithm = new System.Windows.Forms.ComboBox();
             this.btnClearShape = new System.Windows.Forms.Button();
+            this.btnPolygon = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.gbShape.SuspendLayout();
             this.gbSize.SuspendLayout();
@@ -114,6 +116,7 @@
             // 
             // gbShape
             // 
+            this.gbShape.Controls.Add(this.btnPolygon);
             this.gbShape.Controls.Add(this.btnHexagon);
             this.gbShape.Controls.Add(this.btnPentagon);
             this.gbShape.Controls.Add(this.btnLine);
@@ -123,36 +126,36 @@
             this.gbShape.Controls.Add(this.btnRectangle);
             this.gbShape.Location = new System.Drawing.Point(1035, 72);
             this.gbShape.Name = "gbShape";
-            this.gbShape.Size = new System.Drawing.Size(143, 231);
+            this.gbShape.Size = new System.Drawing.Size(143, 260);
             this.gbShape.TabIndex = 4;
             this.gbShape.TabStop = false;
             this.gbShape.Text = "Shapes";
             // 
             // btnHexagon
             // 
-            this.btnHexagon.Location = new System.Drawing.Point(34, 194);
+            this.btnHexagon.Location = new System.Drawing.Point(13, 194);
             this.btnHexagon.Name = "btnHexagon";
-            this.btnHexagon.Size = new System.Drawing.Size(69, 23);
+            this.btnHexagon.Size = new System.Drawing.Size(118, 23);
             this.btnHexagon.TabIndex = 1;
-            this.btnHexagon.Text = "Hexagon";
+            this.btnHexagon.Text = "Equilateral Hexagon";
             this.btnHexagon.UseVisualStyleBackColor = true;
             this.btnHexagon.Click += new System.EventHandler(this.btnHexagon_Click);
             // 
             // btnPentagon
             // 
-            this.btnPentagon.Location = new System.Drawing.Point(34, 165);
+            this.btnPentagon.Location = new System.Drawing.Point(13, 165);
             this.btnPentagon.Name = "btnPentagon";
-            this.btnPentagon.Size = new System.Drawing.Size(69, 23);
+            this.btnPentagon.Size = new System.Drawing.Size(118, 23);
             this.btnPentagon.TabIndex = 1;
-            this.btnPentagon.Text = "Pentagon";
+            this.btnPentagon.Text = "Equilateral Pentagon";
             this.btnPentagon.UseVisualStyleBackColor = true;
             this.btnPentagon.Click += new System.EventHandler(this.btnPentagon_Click);
             // 
             // btnLine
             // 
-            this.btnLine.Location = new System.Drawing.Point(34, 21);
+            this.btnLine.Location = new System.Drawing.Point(13, 21);
             this.btnLine.Name = "btnLine";
-            this.btnLine.Size = new System.Drawing.Size(69, 23);
+            this.btnLine.Size = new System.Drawing.Size(118, 23);
             this.btnLine.TabIndex = 1;
             this.btnLine.Text = "Line";
             this.btnLine.UseVisualStyleBackColor = true;
@@ -160,19 +163,19 @@
             // 
             // btnTriangle
             // 
-            this.btnTriangle.Location = new System.Drawing.Point(34, 107);
+            this.btnTriangle.Location = new System.Drawing.Point(13, 107);
             this.btnTriangle.Name = "btnTriangle";
-            this.btnTriangle.Size = new System.Drawing.Size(69, 23);
+            this.btnTriangle.Size = new System.Drawing.Size(118, 23);
             this.btnTriangle.TabIndex = 1;
-            this.btnTriangle.Text = "Triangle";
+            this.btnTriangle.Text = "Equilateral Triangle";
             this.btnTriangle.UseVisualStyleBackColor = true;
             this.btnTriangle.Click += new System.EventHandler(this.btnTriangle_Click);
             // 
             // btnEllipse
             // 
-            this.btnEllipse.Location = new System.Drawing.Point(34, 78);
+            this.btnEllipse.Location = new System.Drawing.Point(13, 78);
             this.btnEllipse.Name = "btnEllipse";
-            this.btnEllipse.Size = new System.Drawing.Size(69, 23);
+            this.btnEllipse.Size = new System.Drawing.Size(118, 23);
             this.btnEllipse.TabIndex = 1;
             this.btnEllipse.Text = "Ellipse";
             this.btnEllipse.UseVisualStyleBackColor = true;
@@ -180,9 +183,9 @@
             // 
             // btnCircle
             // 
-            this.btnCircle.Location = new System.Drawing.Point(34, 49);
+            this.btnCircle.Location = new System.Drawing.Point(13, 50);
             this.btnCircle.Name = "btnCircle";
-            this.btnCircle.Size = new System.Drawing.Size(69, 23);
+            this.btnCircle.Size = new System.Drawing.Size(118, 23);
             this.btnCircle.TabIndex = 1;
             this.btnCircle.Text = "Circle";
             this.btnCircle.UseVisualStyleBackColor = true;
@@ -190,9 +193,9 @@
             // 
             // btnRectangle
             // 
-            this.btnRectangle.Location = new System.Drawing.Point(34, 136);
+            this.btnRectangle.Location = new System.Drawing.Point(13, 136);
             this.btnRectangle.Name = "btnRectangle";
-            this.btnRectangle.Size = new System.Drawing.Size(69, 23);
+            this.btnRectangle.Size = new System.Drawing.Size(118, 23);
             this.btnRectangle.TabIndex = 1;
             this.btnRectangle.Text = "Rectangle";
             this.btnRectangle.UseVisualStyleBackColor = true;
@@ -201,7 +204,7 @@
             // gbSize
             // 
             this.gbSize.Controls.Add(this.cbLineWidth);
-            this.gbSize.Location = new System.Drawing.Point(1035, 316);
+            this.gbSize.Location = new System.Drawing.Point(1035, 359);
             this.gbSize.Name = "gbSize";
             this.gbSize.Size = new System.Drawing.Size(143, 52);
             this.gbSize.TabIndex = 5;
@@ -211,7 +214,7 @@
             // gbColor
             // 
             this.gbColor.Controls.Add(this.btnColorTable);
-            this.gbColor.Location = new System.Drawing.Point(1035, 396);
+            this.gbColor.Location = new System.Drawing.Point(1035, 439);
             this.gbColor.Name = "gbColor";
             this.gbColor.Size = new System.Drawing.Size(143, 52);
             this.gbColor.TabIndex = 6;
@@ -361,7 +364,7 @@
             // gbAlgorithm
             // 
             this.gbAlgorithm.Controls.Add(this.cbAlgorithm);
-            this.gbAlgorithm.Location = new System.Drawing.Point(1035, 477);
+            this.gbAlgorithm.Location = new System.Drawing.Point(1035, 520);
             this.gbAlgorithm.Name = "gbAlgorithm";
             this.gbAlgorithm.Size = new System.Drawing.Size(143, 67);
             this.gbAlgorithm.TabIndex = 1;
@@ -391,11 +394,32 @@
             this.btnClearShape.UseVisualStyleBackColor = true;
             this.btnClearShape.Click += new System.EventHandler(this.btnClearShape_Click);
             // 
+            // btnPolygon
+            // 
+            this.btnPolygon.Location = new System.Drawing.Point(13, 223);
+            this.btnPolygon.Name = "btnPolygon";
+            this.btnPolygon.Size = new System.Drawing.Size(118, 23);
+            this.btnPolygon.TabIndex = 1;
+            this.btnPolygon.Text = "Polygon";
+            this.btnPolygon.UseVisualStyleBackColor = true;
+            this.btnPolygon.Click += new System.EventHandler(this.btnPolygon_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1084, 612);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1184, 691);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnClearShape);
             this.Controls.Add(this.gbAlgorithm);
             this.Controls.Add(this.gbDrawArea);
@@ -459,6 +483,8 @@
         private System.Windows.Forms.ComboBox cbAlgorithm;
         private System.Windows.Forms.Button btnClearShape;
         private System.Windows.Forms.Button btnResetTimer;
+        private System.Windows.Forms.Button btnPolygon;
+        private System.Windows.Forms.Button button1;
     }
 }
 

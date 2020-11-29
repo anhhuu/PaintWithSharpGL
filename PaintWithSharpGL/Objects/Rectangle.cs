@@ -10,18 +10,37 @@ namespace Paint.Objects
 {
     class Rectangle : Shape
     {
+        private bool IsCompleted;
         public Rectangle(Point start, Point end, Color color, int lineWidth)
         {
             this.StartPoint = start;
             this.EndPoint = end;
             this.Color = color;
             this.LineWidth = lineWidth;
+            this.IsCompleted = false;
+            VerticesControl = new List<Point>();
         }
 
+        public bool Completed
+        {
+            get { return IsCompleted; }
+            set
+            {
+                IsCompleted = value;
+                if (IsCompleted)
+                {
+                    VerticesControl.Add(StartPoint);
+                    VerticesControl.Add(new Point(StartPoint.X, EndPoint.Y));
+                    VerticesControl.Add(EndPoint);
+                    VerticesControl.Add(new Point(EndPoint.X, StartPoint.Y));
+                }
+            }
+        }
         public Point StartPoint { get; set; }
         public Point EndPoint { get; set; }
         public Color Color { get; set; }
         public int LineWidth { get; set; }
+        public List<Point> VerticesControl { get; set; }
 
         public void DrawWithOpenGLBuildIn(OpenGL gl)
         {
@@ -30,26 +49,37 @@ namespace Paint.Objects
             gl.LineWidth(this.LineWidth);
 
             //determine the 4 vertices of a rectangle and connect it with lines
-            gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, StartPoint.Y);
-            gl.Vertex(StartPoint.X, EndPoint.Y);
-            gl.End();
+            if (!Completed)
+            {
+                gl.Begin(OpenGL.GL_LINES);
+                gl.Vertex(StartPoint.X, StartPoint.Y);
+                gl.Vertex(StartPoint.X, EndPoint.Y);
+                gl.End();
 
-            gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, StartPoint.Y);
-            gl.Vertex(EndPoint.X, StartPoint.Y);
-            gl.End();
+                gl.Begin(OpenGL.GL_LINES);
+                gl.Vertex(StartPoint.X, StartPoint.Y);
+                gl.Vertex(EndPoint.X, StartPoint.Y);
+                gl.End();
 
-            gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(StartPoint.X, EndPoint.Y);
-            gl.Vertex(EndPoint.X, EndPoint.Y);
-            gl.End();
+                gl.Begin(OpenGL.GL_LINES);
+                gl.Vertex(StartPoint.X, EndPoint.Y);
+                gl.Vertex(EndPoint.X, EndPoint.Y);
+                gl.End();
 
-            gl.Begin(OpenGL.GL_LINES);
-            gl.Vertex(EndPoint.X, StartPoint.Y);
-            gl.Vertex(EndPoint.X, EndPoint.Y);
-            gl.End();
-
+                gl.Begin(OpenGL.GL_LINES);
+                gl.Vertex(EndPoint.X, StartPoint.Y);
+                gl.Vertex(EndPoint.X, EndPoint.Y);
+                gl.End();
+            }
+            else
+            {
+                gl.Begin(OpenGL.GL_LINE_LOOP);
+                foreach (Point item in VerticesControl)
+                {
+                    gl.Vertex(item.X, item.Y);
+                }
+                gl.End();
+            }
             gl.Flush();
         }
 

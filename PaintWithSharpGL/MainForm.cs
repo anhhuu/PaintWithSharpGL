@@ -17,7 +17,6 @@ namespace Paint
     {
         //user picked color
         private Color UserColor;
-
         //0: Line
         //1: Circle
         //2: Ellipse
@@ -67,14 +66,15 @@ namespace Paint
             EndPoint = new Point(0, 0);
 
             //init drawing objects
-            DrawingObjects = new Shape[7];
+            DrawingObjects = new Shape[8];
             DrawingObjects[0] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[1] = new Circle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[2] = new Ellipse(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[3] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
             DrawingObjects[4] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
-            DrawingObjects[5] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 5, LineWidth);
-            DrawingObjects[6] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, 6, LineWidth);
+            DrawingObjects[5] = new EquilateralPolygon(new Point(0, 0), new Point(0, 0), Color.Black, 5, LineWidth);
+            DrawingObjects[6] = new EquilateralPolygon(new Point(0, 0), new Point(0, 0), Color.Black, 6, LineWidth);
+            DrawingObjects[7] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
 
             Status = "Drawing line";
             lbStatus.Text = Status;
@@ -117,6 +117,14 @@ namespace Paint
             //clear the color and depth buffer.
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 
+            if(fill)
+            {
+                ScanLine.TestScanLine test = new ScanLine.TestScanLine();
+                test.g = gl;
+                test.ScanLinePolygonFill(DrawObjects[0].VerticesControl, gl, 1);
+
+            }
+
             if (IsDrawing)
             {
                 if (AlgorithmType == 1)
@@ -150,7 +158,7 @@ namespace Paint
                     {
                         string typeObj = shape.getTypeOfObject();
                         Stopwatch timer = new Stopwatch();
-                        
+
                         //get timer execute algorithm
                         timer.Start();
                         if (AlgorithmType == 1)
@@ -162,7 +170,7 @@ namespace Paint
                             shape.DrawWithOpenGLBuildIn(gl);
                         }
                         timer.Stop();
-                        
+
                         if (typeObj == "Line")
                         {
                             lbLineGLTimer.Text = "Line:       " + timer.Elapsed.TotalMilliseconds.ToString("#,###0.000 'ms'");
@@ -209,24 +217,45 @@ namespace Paint
                 DrawingObjects[ShapeType].LineWidth = LineWidth;
                 DrawingObjects[ShapeType].StartPoint = StartPoint;
                 DrawingObjects[ShapeType].EndPoint = EndPoint;
+                DrawingObjects[ShapeType].Completed = false;
+
                 IsDrawing = true;
+            }
+        }
+
+        private void openGLControl_MouseMove(object sender, MouseEventArgs e)
+        {
+            //press left mouse button to draw
+            if (e.Button == MouseButtons.Left && ShapeType != 7)
+            {
+                EndPoint = e.Location;
+                EndPoint.Y = RenderContextProvider_Height - EndPoint.Y;
+                DrawingObjects[ShapeType].EndPoint = EndPoint;
+            }
+
+            if (ShapeType == 7)
+            {
+                EndPoint = e.Location;
+                EndPoint.Y = RenderContextProvider_Height - EndPoint.Y;
+                DrawingObjects[ShapeType].EndPoint = EndPoint;
             }
         }
 
         private void openGLControl_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && ShapeType != 7)
             {
                 EndPoint = e.Location;
                 EndPoint.Y = RenderContextProvider_Height - EndPoint.Y;
+                DrawingObjects[ShapeType].Completed = true;
                 IsDrawing = false;
 
                 //drawing real-time when move mouse
                 switch (ShapeType)
                 {
                     case 0:
-                        Line line = new Line(StartPoint, EndPoint, UserColor, LineWidth);
-                        DrawObjects.Add(line);
+                        DrawObjects.Add(DrawingObjects[ShapeType]);
+                        DrawingObjects[ShapeType] = new Line(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
                         break;
                     case 1:
                         Circle circle = new Circle(StartPoint, EndPoint, UserColor, LineWidth);
@@ -237,35 +266,36 @@ namespace Paint
                         DrawObjects.Add(ellipse);
                         break;
                     case 3:
-                        Triangle triangle = new Triangle(StartPoint, EndPoint, UserColor, LineWidth);
-                        DrawObjects.Add(triangle);
+                        DrawObjects.Add(DrawingObjects[ShapeType]);
+                        DrawingObjects[ShapeType] = new Triangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
                         break;
                     case 4:
-                        Objects.Rectangle rec = new Objects.Rectangle(StartPoint, EndPoint, UserColor, LineWidth);
-                        DrawObjects.Add(rec);
+                        DrawObjects.Add(DrawingObjects[ShapeType]);
+                        DrawingObjects[ShapeType] = new Objects.Rectangle(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
                         break;
                     case 5:
-                        Polygon pentagon = new Polygon(StartPoint, EndPoint, UserColor, 5, LineWidth);
-                        DrawObjects.Add(pentagon);
+                        DrawObjects.Add(DrawingObjects[ShapeType]);
+                        DrawingObjects[ShapeType] = new Objects.EquilateralPolygon(new Point(0, 0), new Point(0, 0), Color.Black, 5, LineWidth);
                         break;
                     case 6:
-                        Polygon hexagon = new Polygon(StartPoint, EndPoint, UserColor, 6, LineWidth);
-                        DrawObjects.Add(hexagon);
+                        DrawObjects.Add(DrawingObjects[ShapeType]);
+                        DrawingObjects[ShapeType] = new Objects.EquilateralPolygon(new Point(0, 0), new Point(0, 0), Color.Black, 6, LineWidth);
                         break;
                     default:
                         break;
                 }
             }
-        }
-
-        private void openGLControl_MouseMove(object sender, MouseEventArgs e)
-        {
-            //press left mouse button to draw
-            if (e.Button == MouseButtons.Left)
+            if (ShapeType == 7)
             {
                 EndPoint = e.Location;
                 EndPoint.Y = RenderContextProvider_Height - EndPoint.Y;
-                DrawingObjects[ShapeType].EndPoint = EndPoint;
+                DrawingObjects[ShapeType].StartPoint = EndPoint;
+                if (e.Button == MouseButtons.Right)
+                {
+                    DrawingObjects[ShapeType].Completed = true;
+                    DrawObjects.Add(DrawingObjects[ShapeType]);
+                    DrawingObjects[ShapeType] = new Polygon(new Point(0, 0), new Point(0, 0), Color.Black, LineWidth);
+                }
             }
         }
 
@@ -322,6 +352,13 @@ namespace Paint
         {
             ShapeType = 6;
             Status = "Equilateral Hexagon";
+            lbStatus.Text = Status;
+        }
+
+        private void btnPolygon_Click(object sender, EventArgs e)
+        {
+            ShapeType = 7;
+            Status = "Polygon";
             lbStatus.Text = Status;
         }
 
@@ -397,6 +434,11 @@ namespace Paint
             lbRecGLTimer.Text = "Rectangle: 0.000 ms";
             lbPenGLTimer.Text = "Pentagon: 0.000 ms";
             lbHexGLTimer.Text = "Hexagon: 0.000 ms";
+        }
+        private bool fill = false;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            fill = true;
         }
     }
 }

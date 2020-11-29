@@ -23,6 +23,7 @@ namespace Paint.Objects
         //The point of the boder circle
         private Point BorderPoint;
 
+        public bool Completed { get; set; }
         public Ellipse(Point start, Point end, Color color, int lineWidth)
         {
             this.CenterPoint = start;
@@ -57,6 +58,8 @@ namespace Paint.Objects
 
         public Color Color { get; set; }
         public int LineWidth { get; set; }
+        public List<Point> VerticesControl { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void DrawWithOpenGLBuildIn(OpenGL gl)
         {
 			//Set color, line width
